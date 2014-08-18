@@ -1,0 +1,36 @@
+{
+  "name": "Party Mode",
+  "description": "Experimental audio visualizer",
+  "version": "1.0",
+  "permissions": [
+    "activeTab"
+ //    "tabs", "http://*/*", "https://*/*"
+  ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+"externally_connectable": {
+  "matches": ["*://*.reddit.com/*"]
+},
+  // "content_scripts": [
+  //     {
+  //         "matches": ["http://*/*", "https://*/*"],
+  //         "js": ["js/main.js"]
+  //     }
+  // ],
+  "browser_action": {
+      "default_icon": {
+//          "19": "icons/19x19.png",
+//          "38": "icons/38x38.png"
+      },
+      "default_title": "tooltip"
+  },
+  "manifest_version": 2,
+  "web_accessible_resources": [
+    "index.html",
+    "css/*",
+    "js/*",
+    "*"
+  ]
+}

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+
+        <title>Party Mode - An audio visualizer.</title>
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="icomoon/style.css">
+        <link rel="stylesheet" href="css/style.css">
+
+<!--         <script src="https://cwilso.github.io/AudioContext-MonkeyPatch/AudioContextMonkeyPatch.js"></script> -->
+<!--         <script src="bower_components/underscore/underscore.js"></script> -->
+<!--         <script src="http://d3js.org/d3.geo.projection.v0.min.js"></script> -->
+        <script src="js/d3.js"></script>
+        <script src="js/d3.hexbin.v0.min.js?5c6e4f0"></script>
+        <script src="js/jquery.js"></script>
+        <script src="js/mousetrap.js"></script>
+        <script src="js/main.js"></script>
+
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-53252033-1', 'auto');
+          ga('send', 'pageview');
+
+        </script>
+
+ <!--        <script> $(document).ready(function() { App.init(); }); </script> -->
+    </head>
+
+    <body>
+        <div class="md-modal md-effect-1" id="modal-about">
+            <div class="md-content">
+                <!-- <h3>Credits</h3> -->
+                <div>
+                    <i class="icon-headphones"></i>
+                    <p>Party Mode is an experimental audio visualizer powered by <a target='_blank' href='http://d3js.org'>d3.js</a> and the <a target='_blank' href='http://www.w3.org/TR/webaudio/'>web audio api</a>.  It requires a modern browser and a decent CPU.  This app was developed by Mathew Preziotte with help and inspiration from:</p>
+                    <ul>
+                        <li><strong>Javascript -- </strong> 
+                            <a target='_blank' href='http://bost.ocks.org/mike/'>Mike Bostock</a>'s, bl.ocks: 
+                            <a target='_blank' href='http://bl.ocks.org/mbostock/7782500'>#7782500</a>, 
+                            <a target='_blank' href='http://bl.ocks.org/mbostock/3795048'>#3795048</a>, 
+                            <a target='_blank' href='http://bl.ocks.org/mbostock/4248145'>#4248145</a>, 
+                            <a target='_blank' href='http://bl.ocks.org/mbostock/7782500'>#7782500</a>, 
+                            <a target="_blank" href='https://stackoverflow.com/questions/13368046/how-to-normalize-a-list-of-positive-numbers-in-javascript'>Stack Overflow</a>, 
+                            <a target='_blank' href='http://codetheory.in/controlling-the-frame-rate-with-requestanimationframe/'>Code Theory</a>, 
+                            <a target='_blank' href='http://craig.is/killing/mice'>Mousetrap.js</a>, 
+                            <a target='_blank' href='https://jquery.com/'>jQuery</a>, and 
+                            <a target='_blank' href='http://www.developphp.com/view.php?tid=1348'>DevelopPHP</a>. 
+                            <a target='_blank' href='http://www.michael-gerhaeuser.de/?f=fileapi/readme.html'>Michael Gerhaeuser</a>, 
+                            <a target='_blank' href='http://lostechies.com/derickbailey/2013/09/23/getting-audio-file-information-with-htmls-file-api-and-audio-element/'>Los Techies</a>
+                        </li>
+                        <li><strong>Design -- </strong> 
+                            Codrops [<a target='_blank' href='http://tympanus.net/Development/ModalWindowEffects/'>1</a>] 
+                            [<a target='_blank' href='hhttp://tympanus.net/codrops/2014/01/21/dot-navigation-styles/'>2</a>] 
+                            ColourLovers [<a target='_blank' href='http://www.colourlovers.com/palette/3406603/Sunset_at_Bayinbuluk'>1</a>] 
+                            [<a target='_blank' href='http://www.colourlovers.com/palette/944213/forever_lost'>2</a>] 
+                            [<a target='_blank' href='http://www.colourlovers.com/palette/728391/Dig_My_Olive_Branch'>3</a>] 
+                            [<a target='_blank' href='http://www.colourlovers.com/palette/3406636/Just_Breathe'>4</a>] 
+                            [<a target='_blank' href='http://www.colourlovers.com/palette/443995/i_demand_a_pancake'>5</a>], 
+                            <a target='_blank' href='http://codepen.io/aronwoost/pen/nlyrf'>aronwoost</a>, 
+                            <a target="_blank" href='https://news.ycombinator.com/item?id=2299806'>Dustin Cartwright</a>, 
+                            <a target="_blank" href='http://matthewlein.com/ceaser/'>Ceaser</a>
+                            <a target='_blank' href='http://www.developphp.com/view.php?tid=1348'></a>, 
+                            Headphones by Kevin Hipke and Record by Juan Pablo Bravo from 
+                            <a target='_blank' href='thenounproject.com'>The Noun Project</a> 
+                            <a target='_blank', href='http://icomoon.io/app/'>icomoon</a>, 
+                            iconmelon, 
+                            fontello, 
+                            iconmonstr.
+                        </li>
+                    </ul>
+                    <button class="md-close">dismiss</button>
+                </div>
+            </div>
+        </div>
+        <div class="md-modal md-effect-1" id="modal-keyboard">
+            <div class="md-content">
+                <!-- <h3>Keyboard Shortcuts</h3> -->
+                <div>
+                    <i class="icon-keyboard"></i>
+                    <ul>
+                        <li>
+                            <a href="#" class="key"><span>1</span></a> through <a href="#" class="key"><span>7</span></a> selects a visualization
+                        </li>                        
+                        <li>
+                            <a href="#" class="key" style='width: 58px;'><span>space</span></a> play / pause</a>
+                        </li>
+                        <li>
+                            <a href="#" class="key"><span>f</span></a>ull screen</a>
+                        </li>
+                        <li>
+                            <a href="#" class="key"><span>m</span></a>enu</a>
+                        </li>
+                        <li>
+                            <a href="#" class="key"><span>c</span></a>hange song</a>
+                        </li>
+                        <li>
+                            <a href="#" class="key"><span>l</span></a>oop</a> random colors and visualizers
+                        </li>
+                        <li>
+                            <a href="#" class="key"><span>&#9650;</span></a><a href="#" class="key"><span>&#9660;</span></a> cycles vizualization</a>
+                        </li>
+                        <li>
+                            <a href="#" class="key"><span>&#9664;</span></a><a href="#" class="key"><span>&#9654;</span></a> cycles color palettes</a>
+                        </li>
+
+                    </ul>
+                    <button class="md-close">dismiss</button>
+                </div>
+            </div>
+        </div>
+        <i class="icon-menu"></i>
+        <div class='menu'>
+            <div class='options'>
+                <i class="i icon-question"></i> 
+                <i class="i icon-keyboard2"></i> 
+                <i class="i icon-loop-off"></i> 
+                <i class="i icon-volume-medium"></i>
+                <i class="i icon-github2"></i> 
+                <i class="i icon-expand"></i> 
+            </div>
+
+            <ul>
+                <li id='circle' viz-num='0' class='active'></li>
+                <li id='chop' viz-num='1'></li>
+                <li id='icosahedron' viz-num='2'></li>
+                <li id='grid' viz-num='3'></li>
+                <li id='equal' viz-num='4'></li>
+                <li id='spin' viz-num='5'></li>
+                <li id='hexbin' viz-num='6'></li>
+<!--            <li id='voronoi' viz-num='7'></li> -->
+                <li class='buffer'></li>
+
+            </ul>
+        </div>
+
+        <div class='wrapper'>
+           <div class='vinyl-container'><i class="icon-vinyl"></i></div>
+
+            <div id="mp3_player" class='fade'>
+                <div id="audio_box"></div> <i id='fullscreen' class="icon-resize-full-alt"></i>
+            </div>
+
+            <div id='progressBar'></div>
+            
+            <div class='menu-wide'>
+
+                <div class="slider">
+                    <input min="1" max="100" value="20" id='slider' type="range">
+                </div>
+
+                <div class="dotstyle dotstyle-scaleup">
+                    <ul>
+                        <li class="current"><a class='zero' href="#">0</a></li>
+                        <li><a class='one' href="#">1</a></li>
+                        <li><a class='two' href="#">2</a></li>
+                        <li><a class='three' href="#">3</a></li>
+                        <li><a class='four' href="#">4</a></li>
+                        <li><a class='five' href="#">5</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

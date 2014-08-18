@@ -1,0 +1,1023 @@
+
+/* /////////////////// */
+/* LAYOUT AND UI STUFF */
+/* /////////////////////////////////////////////////////////////////////////////////////////////// */
+
+html {
+  background-color: #A6554B;
+  overflow: hidden;
+
+  -webkit-transition: background-color 0.5s ease;
+     -moz-transition: background-color 0.5s ease;
+       -o-transition: background-color 0.5s ease;
+          transition: background-color 0.5s ease;
+}
+
+body {
+  margin: 0;
+}
+
+.wrapper {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 2;
+}
+
+#mp3_player { 
+  width:550px; 
+  height:30px; 
+  background:#000; 
+  padding:5px; 
+  margin:5px auto; 
+  bottom: 0;
+  position: absolute;
+  border-radius: 5px;
+  display: none;
+}
+
+#mp3_player > div > audio{  
+  width:500px; 
+  background:#000;
+}
+
+
+#audio_box {
+  display: inline;
+}
+
+#fullscreen {
+  color: white;
+  margin-top: 7px;
+  float: right;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.noCursor {
+  cursor: none;
+}
+
+.i {
+  z-index: 8;
+  cursor: pointer;
+}
+
+.icon-expand, .icon-loop-off, .icon-volume-medium, .icon-question, .icon-github2, .icon-keyboard2 {
+  font-size: 26px;
+  padding-top: 10px;
+  margin-right: 4px;
+  color: white;
+}
+
+.icon-menu, .icon-knobs {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  font-size: 16px;
+  opacity: 1;
+  cursor: pointer;
+  z-index: 4;
+  color: white;
+  -webkit-font-smoothing: none;
+  -webkit-transition: opacity .3s linear;
+     -moz-transition: opacity .3s linear;
+       -o-transition: opacity .3s linear;
+          transition: opacity .3s linear;
+}
+
+.icon-headphones, .icon-keyboard {
+  font-size: 128px;
+  color: white;
+  float: right;
+}
+ 
+.icon-vinyl, .icon-vinyl2, .icon-vinyl3 {
+  position: absolute;
+  display: inline-block;
+  font-size: 128px;
+  opacity: 0.6;
+  left: 50%;
+  -webkit-animation: fade 2s linear 2s, spinspin 3s infinite linear;
+     -moz-animation: fade 2s linear 2s, spinspin 3s infinite linear;
+          animation: fade 2s linear 2s, spinspin 3s infinite linear;
+  -webkit-animation-fill-mode: forwards; 
+     -moz-animation-fill-mode: forwards; 
+          animation-fill-mode: forwards; 
+  }
+
+/* http://jsfiddle.net/mmansion/yhbfc/8/ */
+.vinyl-container {
+    text-align: center;
+    position: absolute;
+    width: 128px;
+    height: 128px;
+    right: 50%;
+    top: 50%;
+    margin-right: 6px; /*subtract by half width*/
+    margin-top: -68px; /*subtract by half height*/
+/*    margin-right: -64px; 
+    margin-top: -64px; */
+
+}
+
+
+/* hhttp://tympanus.net/codrops/2014/01/21/dot-navigation-styles/ */
+.dotstyle ul {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  cursor: default;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.dotstyle li {
+  position: relative;
+  display: block;
+  float: left;
+  margin: 0 16px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.dotstyle li a {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  border-radius: 50%;
+  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.3);
+  text-indent: -999em; /* make the text accessible to screen readers */
+  cursor: pointer;
+  position: absolute;
+  border: 1px solid black;
+  opacity: 0.6;
+}
+
+html.theme_1 .dotstyle li a, html.theme_3 .dotstyle li a {
+  border: 1px solid white;
+}
+
+
+
+.dotstyle li a.zero {
+  background-color: #F7D11E;
+}
+
+.dotstyle li a.one {
+  background-color: #000;
+}
+
+.dotstyle li a.two {
+  background-color: #5D4157;
+}
+
+.dotstyle li a.three {
+  background-color: #E5EDB8;
+}
+
+.dotstyle li a.four {
+  background-color: #E4A57A;
+}
+
+.dotstyle li a.five {
+  background-color: #594F4F;
+}
+
+.dotstyle li a:focus {
+  outline: none;
+}
+
+.dotstyle-scaleup li a {
+  -webkit-transition: -webkit-transform 0.3s ease, background-color 0.3s ease;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.dotstyle-scaleup li a:hover,
+.dotstyle-scaleup li a:focus {
+  opacity: 1;
+}
+
+.dotstyle-scaleup li.current a {
+  -webkit-transform: scale(1.5);
+  transform: scale(1.5);
+}
+
+.dotstyle {
+  position: absolute;
+  right: 0;
+  bottom: 20px;
+  -webkit-transition: opacity .3s linear;
+     -moz-transition: opacity .3s linear;
+       -o-transition: opacity .3s linear;
+          transition: opacity .3s linear;
+}
+
+
+#progressBar {
+  height: 3px;
+  background-color: white;
+  opacity: 0.5;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+/* /////////////////// */
+/* MENU STUFF //////// */
+/* /////////////////////////////////////////////////////////////////////////////////////////////// */
+
+.menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  width: 20px;
+  height: 100%;
+  max-height: 100%;
+  background-color: black;
+  color: white;
+  overflow: hidden;
+  opacity: 0.8;
+  -webkit-transition: all 300ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+     -moz-transition: all 300ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+       -o-transition: all 300ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+          transition: all 300ms cubic-bezier(0.770, 0.000, 0.175, 1.000); /* easeInOutQuart */
+
+  -webkit-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+     -moz-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+       -o-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+          transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); /* easeInOutQuart */
+}
+
+.options {
+  width: 100%;
+  min-width: 200px;
+  height: 26px;
+  text-align: justify;
+  margin-top: 2px;
+  opacity: 0;
+  -webkit-transition: opacity .1s linear;
+     -moz-transition: opacity .1s linear;
+       -o-transition: opacity .1s linear;
+          transition: opacity .1s linear;
+}
+
+.options:after {
+    content: "";
+    display: inline-block;
+    width: 100%;    
+}
+
+.menu-wide {
+  position: absolute;
+  top: 0;
+  z-index: 3;
+  width: 100%;
+  height: 54px;
+  color: white;
+  max-width: 100%;
+  opacity: 0.8;
+  -webkit-transition: all 300ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+     -moz-transition: all 300ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+       -o-transition: all 300ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+          transition: all 300ms cubic-bezier(0.770, 0.000, 0.175, 1.000); /* easeInOutQuart */
+
+  -webkit-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+     -moz-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+       -o-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+          transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); /* easeInOutQuart */
+}
+
+.menu ul {
+  width: 246px;
+  max-height: 100%;
+  padding-left: 20px;
+  overflow-y: scroll;
+
+}
+.menu ul li {
+  display: block;
+  padding: 10px;
+  border: 2px solid white;
+  width: 180px;
+  height: 90px;
+  margin-top: 10px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.fade {
+  opacity: 1;
+  -webkit-transition: opacity .3s linear;
+     -moz-transition: opacity .3s linear;
+       -o-transition: opacity .3s linear;
+          transition: opacity .3s linear;
+}
+
+.fadeOut {
+  opacity: 0;
+}
+
+.menu-open {
+ opacity: 0.8;
+  z-index: 6;
+  width: 224px;
+}
+.menu-open .options {
+  opacity: 1;
+  -webkit-transition: opacity .3s linear .3s;
+     -moz-transition: opacity .3s linear .3s;
+       -o-transition: opacity .3s linear .3s;
+          transition: opacity .3s linear .3s;
+}
+
+.svg-open {
+  -webkit-transition: all 500ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+     -moz-transition: all 500ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+       -o-transition: all 500ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+          transition: all 500ms cubic-bezier(0.770, 0.000, 0.175, 1.000); /* easeInOutQuart */
+
+  -webkit-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+     -moz-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+       -o-transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+          transition-timing-function: cubic-bezier(0.770, 0.000, 0.175, 1.000); /* easeInOutQuart */
+   
+/*
+  -webkit-transform: perspective(1500) rotateY(180deg);
+  transform: translate3d(300px, 0, 0);
+
+  -webkit-transform: perspective(1500) translate3d(0px, 0, -300px) rotateY(-10deg);
+  transform: perspective(600) translate3d(100px, 0, -600px) rotateY(-20deg);
+*/
+}
+
+.menu svg {
+  position: relative;
+}
+.menu svg circle, .menu svg rect, .menu svg path, .menu svg line {
+  opacity: 1;
+  fill: black;
+  stroke: white; 
+  stroke-width: 3;
+}
+
+.menu svg rect.equal {
+  fill: white;
+}
+
+.menu li {
+  -webkit-transition: border .1s linear;
+     -moz-transition: border .1s linear;
+       -o-transition: border .1s linear;
+          transition: border .1s linear;
+}
+.menu li.active {
+  border: 7px solid white;
+  padding: 5px;
+}
+
+.menu .buffer {
+  border: 0;
+}
+
+
+/* /////////////////// */
+/* SVG STUFF ///////// */
+/* /////////////////////////////////////////////////////////////////////////////////////////////// */
+
+/*svg .spinn:nth-of-type(2) {
+  -webkit-animation: spinspin2 5s infinite linear;
+  animation: spinspin2 5s infinite linear;
+}
+*/
+
+/* http://www.colourlovers.com/palette/3406603/Sunset_at_Bayinbuluk */
+svg circle, svg rect {
+  opacity: .25;
+  fill: #F7D11E;
+  stroke: #F27F40; 
+  stroke-width: 2;
+  -webkit-transition: fill 1.5s ease-in-out;
+     -moz-transition: fill 1.5s ease-in-out;
+       -o-transition: fill 1.5s ease-in-out;
+          transition: fill 1.5s ease;
+   
+  -webkit-transition: stroke 1.5s ease-in-out;
+     -moz-transition: stroke 1.5s ease-in-out;
+       -o-transition: stroke 1.5s ease-in-out;
+          transition: stroke 1.5s ease;
+}
+
+svg, svg path, svg line, svg g {
+  -webkit-transform-origin: center;
+     -moz-transform-origin: center;
+       -o-transform-origin: center;
+          transform-origin: center;
+}
+
+svg rect:nth-of-type(0) {
+  opacity: 0;
+}
+
+svg rect {
+    -webkit-transform: rotate(-30deg);
+       -moz-transform: rotate(-30deg);
+         -o-transform: rotate(-30deg);
+            transform: rotate(-30deg);
+}
+
+svg .bar rect, svg rect.equal  {
+    -webkit-transform: rotate(0deg);
+       -moz-transform: rotate(0deg);
+         -o-transform: rotate(0deg);
+            transform: rotate(0deg);
+}
+
+svg rect.equal, html.theme_2 svg rect.equal {
+  opacity: 1;
+  stroke-width: 0;
+}
+
+html.theme_3 svg rect.equal, html.theme_4 svg rect.equal  {
+  opacity: 0.8;
+  stroke-width: 0;
+}
+
+html.theme_1 svg rect.equal {
+  fill: white;
+  stroke-width: 0;
+}
+
+svg .isoco {
+  stroke-width: 0;
+}
+
+path {
+  fill: #f88e22;
+  stroke: #fff;
+  stroke-width: 2px;
+  opacity: 0.4;
+}
+
+svg {
+  position: absolute;
+  z-index: -1;
+  -webkit-transform-style: preserve-3d;
+          transform-style: preserve-3d;
+  -webkit-transition: -webkit-transform 0.5s;
+     -moz-transition: -moz-transform 0.5s;
+       -o-transition: -o-transform 0.5s;
+          transition: transform 0.5s;
+}
+
+svg .spin {
+  fill: none;
+  stroke-linecap: butt;
+  -webkit-transform-origin: center;
+     -moz-transform-origin: center;
+       -o-transform-origin: center;
+          transform-origin: center;
+  -webkit-animation: draw 5s linear infinite;
+     -moz-animation: draw 5s linear infinite;
+          animation: draw 5s linear infinite;
+}
+
+.graticule {
+  fill: none;
+  stroke-width: 3px;
+  stroke: #F7D11E;
+  stroke-linecap: round;
+  opacity: 1;
+}
+
+
+/* THEME 1 STUFF */
+
+html.theme_1 {
+  background-color: black;
+}
+html.theme_1 svg circle, html.theme_1 svg rect {
+  fill: black;
+  stroke: white; 
+  stroke-width: 3;
+  opacity: 1;
+}
+
+html.theme_1 path {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2px;
+  opacity: 1;
+}
+
+htm1.theme_1 path.skew{
+  fill: white;
+  opacity: .7;
+}
+
+html.theme_1 .icon-menu {
+  color: white;
+}
+
+html.theme_1 .isoco2, html.theme_1 .isoco3 {
+  visibility: hidden;
+}
+
+html.theme_1 .graticule {
+  fill: none;
+  stroke: white;
+}
+
+
+
+/* THEME 2 STUFF - http://www.colourlovers.com/palette/944213/forever_lost */
+
+html.theme_2 {
+  background-color: #EBE3AA;
+}
+html.theme_2 svg circle, html.theme_2 svg path, html.theme_2 svg rect, html.theme_2 svg line {
+  fill: #5D4157;
+  stroke: white; 
+  stroke-width: 1;
+  opacity: .25;
+}
+
+html.theme_2 .graticule {
+  fill: none;
+  stroke: #5D4157;
+  opacity: .6;
+  stroke-width: .5px;
+  stroke-dasharray: 20px 2px;
+  stroke-dashoffset: 10px;
+}
+
+
+/* THEME 3 STUFF - http://www.colourlovers.com/palette/728391/Dig_My_Olive_Branch */
+
+html.theme_3 {
+  background-color: #300018;
+}
+html.theme_3 svg circle, html.theme_3 svg path, html.theme_3 svg rect, html.theme_3 svg line {
+  fill: #E5EDB8;
+  stroke: white; 
+  stroke-width: 1;
+  opacity: .25;
+}
+
+html.theme_3 .isoco3 {
+  visibility: hidden;
+}
+
+html.theme_3 .graticule {
+  fill: none;
+  stroke: #E5EDB8;
+  stroke-width: 15px;
+  opacity: 0.6
+}
+
+/* THEME 4 STUFF - http://www.colourlovers.com/palette/3406636/Just_Breathe */
+
+html.theme_4 {
+  background-color: #F4F0CD;
+}
+html.theme_4 svg circle, html.theme_4 svg path, html.theme_4 svg rect, html.theme_4 svg line {
+  fill: #E4A57A;
+  stroke: white; 
+  stroke-width: 1;
+  opacity: .3;
+}
+html.theme_4 svg circle:nth-of-type(4) {
+  fill: #ADD9C8;
+}
+html.theme_4 svg circle:nth-of-type(3) {
+  fill: #F1E3B4;
+}
+html.theme_4 svg circle:nth-of-type(2) {
+  fill: #DFE3C8;
+}
+
+html.theme_4 path.hexagon {
+}
+
+html.theme_4 .graticule {
+  fill: none;
+  opacity: 1;
+  stroke: #E4A57A;
+}
+
+
+/* THEME 5 STUFF - http://www.colourlovers.com/palette/443995/i_demand_a_pancake */
+
+html.theme_5 {
+  background-color: #9DE0AD;
+}
+
+html.theme_5 svg circle, html.theme_5 svg path, html.theme_5 svg rect, html.theme_5 svg line {
+  fill: #594F4F;
+  stroke: white; 
+  stroke-width: 1;
+  opacity: .5;
+}
+
+html.theme_5 svg circle:nth-last-of-type(3) {
+  fill: #E5FCC2;
+}
+
+html.theme_5 svg .isoco {
+  stroke-width: 0;
+  opacity: .7;
+}
+
+html.theme_5 svg .isoco:nth-of-type(odd) {
+  fill: #E5FCC2;
+}
+
+html.theme_5 svg rect.equal {
+  opacity: 1;
+  stroke-width: 0;
+  transform: skewY(45deg);
+}
+
+html.theme_5 .hexagon {
+  opacity: 0.2;
+  stroke-width: 25px;
+}
+
+html.theme_5 .graticule {
+  fill: none;
+  stroke: #594F4F;
+  stroke-dasharray: 5px;
+  opacity: 1;
+}
+
+
+/* /////////////////// */
+/* ANIMATIONS STUFF // */
+/* /////////////////////////////////////////////////////////////////////////////////////////////// */
+
+@-webkit-keyframes spinspin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes spinspin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes spinspin2 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(-360deg);
+    transform: rotate(-360deg);
+  }
+}
+@keyframes spinspin2 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(-360deg);
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes draw {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(-360deg);
+    transform: rotate(-360deg);
+  }
+}
+
+@-webkit-keyframes draw {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(-360deg);
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes fade {
+  100% {
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes fade {
+  100% {
+    opacity: 0;
+  }
+}
+
+
+/* BLINK KEYFRAME */
+/* http://mudbugmedia.com/blog/2012/10/03/css3-keyframe-animation/ */
+
+@keyframes blink {
+  0% {transform: scale(1,1.6);}
+  2% {transform: scale(1,0);}
+  4% {transform: scale(1,0);}
+  5% {transform: scale(1,1.6);}
+  100% {transform: scale(1,1.6);}
+}
+
+@-webkit-keyframes blink {
+  0% {transform: scale(1,1.6);}
+  2% {transform: scale(1,0);}
+  4% {transform: scale(1,0);}
+  5% {transform: scale(1,1.6);}
+  100% {transform: scale(1,1.6);}
+}
+
+
+/* /////////////////// */
+/* RANGE SLIDER -- http://codepen.io/aronwoost/pen/nlyrf */
+/* /////////////////////////////////////////////////////////////////////////////////////////////// */
+
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.slider {
+  width: 200px;
+  position: absolute;
+  right: 325px;
+  top: 9px;
+}
+
+input[type="range"] {
+  width: 100%;
+  height: 3px;
+  margin: 0;
+  border: none;
+  padding: 1px 4px;
+  border-radius: 14px;
+  background: rgba(35, 37, 40, .6);
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  -webkit-box-shadow: inset 0 1px 0 0 #0d0e0f, inset 0 -1px 0 0 #3a3d42;
+          box-shadow: inset 0 1px 0 0 #0d0e0f, inset 0 -1px 0 0 #3a3d42;
+  outline: none; /* no focus outline */
+}
+
+input[type="range"]::-moz-range-track {
+  border: inherit;
+  background: transparent;
+}
+
+input[type="range"]::-ms-track {
+  border: inherit;
+  color: transparent; /* don't drawn vertical reference line */
+  background: transparent;
+}
+
+input[type="range"]::-ms-fill-lower,
+input[type="range"]::-ms-fill-upper {
+  background: transparent;
+}
+
+input[type="range"]::-ms-tooltip {
+  display: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  -webkit-box-shadow: inset 0 1px 0 0 black, inset 0 -1px 0 0 black;
+  box-shadow: inset 0 1px 0 0 black, inset 0 -1px 0 0 black;
+  width: 16px;
+  height: 16px;
+  border: none;
+  border-radius: 12px;
+  background-color: white;
+  cursor: ew-resize ;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: none;
+  border-radius: 12px;
+  background-color: white;
+  cursor: ew-resize ;
+}
+
+input[type="range"]::-ms-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 12px;
+  border: 0;
+  background-image: linear-gradient(to bottom, #529de1 0, #245e8f 100%); /* W3C */
+}
+
+/* /////////////////// */
+/* MODAL STUFF -- http://tympanus.net/Development/ModalWindowEffects/ */
+/* /////////////////////////////////////////////////////////////////////////////////////////////// */
+
+/* http://css-tricks.com/forums/topic/transforms-cause-font-smoothing-weirdness-in-webkit/ */
+.md-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  max-width: 630px;
+  min-width: 320px;
+  height: auto;
+  z-index: 2000;
+  visibility: hidden;
+  color: white;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+     -moz-transform: translateX(-50%) translateY(-50%);
+      -ms-transform: translateX(-50%) translateY(-50%);
+       -o-transform: translateX(-50%) translateY(-50%);
+          transform: translateX(-50%) translateY(-50%);
+}
+
+.md-show {
+  visibility: visible;
+}
+
+.md-show.md-effect-1 .md-content {
+  opacity: 0.7;
+  -webkit-transform: scale(1);
+     -moz-transform: scale(1);
+      -ms-transform: scale(1);
+       -o-transform: scale(1);
+          transform: scale(1);
+}
+
+.md-effect-1 .md-content {
+  opacity: 0;
+  -webkit-transform: scale(0.7);
+     -moz-transform: scale(0.7);
+      -ms-transform: scale(0.7);
+       -o-transform: scale(0.7);
+          transform: scale(0.7);
+  -webkit-transition: all 0.3s;
+     -moz-transition: all 0.3s;
+       -o-transition: all 0.3s;
+          transition: all 0.3s;
+}
+
+.md-content {
+  color: #fff;
+  background: black;
+  position: relative;
+  border-radius: 20px;
+  margin: 0 auto;
+}
+
+.md-content h3 {
+  margin: 0;
+  padding: 0.4em;
+  text-align: center;
+  font-size: 2.4em;
+  font-weight: 300;
+  opacity: 0.8;
+  background: rgba(0,0,0,0.1);
+  border-radius: 3px 3px 0 0;
+}
+
+.md-content > div {
+  padding: 15px 40px 30px;
+  margin: 0;
+  font-weight: lighter;
+  font-size: 15px;
+}
+
+.md-content > div p {
+  margin: 0;
+  padding: 10px 0;
+}
+
+.md-content > div ul li {
+  padding: 5px 0;
+  /*font-size: 0.8em;*/
+}
+
+#modal-about a, #modal-about a:visited {
+  color: white;
+}
+
+#modal-about a:hover {
+  text-decoration: none;
+}
+
+.md-content button {
+  display: block;
+  margin: 0 auto;
+  font-size: 0.8em;
+}
+
+button {
+  border: none;
+  padding: 0.6em 1.2em;
+  background: white;
+  color: black;
+  font-family: 'Lato', Calibri, Arial, sans-serif;
+  font-size: 1em;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: inline-block;
+  margin: 3px 2px;
+  border-radius: 2px;
+}
+
+#modal-keyboard ul {
+  padding-left: 0;
+}
+
+#modal-keyboard li {
+  display: block;
+}
+
+/* https://news.ycombinator.com/item?id=2299806 */
+
+.key {
+  display: inline-block;
+  color: #333;
+  font: bold 9pt arial;
+  text-decoration: none;
+  text-align: center;
+  width: 25px;
+  height: 23px;
+  margin: 3px;
+  background: #eff0f2;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-top: 1px solid #f5f5f5;
+  -webkit-box-shadow: inset 0 0 25px #e8e8e8, 0 1px 0 #c3c3c3, 0 2px 0 #c9c9c9, 0 2px 3px #333;
+  -moz-box-shadow: inset 0 0 25px #e8e8e8, 0 1px 0 #c3c3c3, 0 2px 0 #c9c9c9, 0 2px 3px #333;
+  box-shadow: inset 0 0 25px #e8e8e8, 0 1px 0 #c3c3c3, 0 2px 0 #c9c9c9, 0 2px 3px #333;
+  text-shadow: 0px 1px 0px #f5f5f5;
+  cursor: text;
+}
+
+.key span {
+  display: block;
+  margin: 5px 0 0;
+  text-transform: uppercase;
+}
+
+/* /////////////////// */
+/* UNSORTED STUFF //// */
+/* /////////////////////////////////////////////////////////////////////////////////////////////// */
+
+/*
+.q0-9 { fill: rgb(197,27,125); }
+.q1-9 { fill: rgb(222,119,174); }
+.q2-9 { fill: rgb(241,182,218); }
+.q3-9 { fill: rgb(253,224,239); }
+.q4-9 { fill: rgb(247,247,247); }
+.q5-9 { fill: rgb(230,245,208); }
+.q6-9 { fill: rgb(184,225,134); }
+.q7-9 { fill: rgb(127,188,65); }
+.q8-9 { fill: rgb(77,146,33); }
+*/
+
+
+svg line {
+  stroke: #f88e22; 
+  stroke-width: 2px;
+}
+
+html.theme_1 svg line {
+  stroke: #fff; 
+  stroke-width: 2px;
+}
