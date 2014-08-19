@@ -5,12 +5,9 @@ An experimental music visualizer using d3.js and the web audio api.  Working dem
 
 TODO
 ====
-- tooltip
-- some subtle css tweaks
 - fullscreen/resize updates center coords
 - record some cool motion screencaps
 - play/pause spin animation
-- back to preziotte.com
 
 - cross browse
 - auto detect mp3s in folder

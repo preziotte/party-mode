@@ -55,6 +55,7 @@
 		$('.menu, .icon-menu').on('mouseenter touchstart', function() { h.toggleMenu('open'); });
 		$('.menu').on('mouseleave', function() { h.toggleMenu('close'); });
 		$('.menu').on(click, 'li', function() { h.vizChange(+$(this).attr('viz-num')); });
+		$('.buffer').on(click, function() { window.location.href='http://preziotte.com' });
 		$('.wrapper').on(click, function() { h.toggleMenu('close'); });
 		$('.icon-expand').on(click, h.toggleFullScreen);
 		$('.icon-question').on(click, function() { h.showModal('#modal-about'); });
@@ -642,7 +643,7 @@
 		root.t0_thumb = Date.now();
 
 		root.projection_thumb = d3.geo.orthographic()
-		    .scale(height)
+		    .scale(height*1.5)
 		    .translate([width/2, height/2])
             .center([0, 0]);
 
@@ -710,7 +711,7 @@
 
 			var xx = c.total()/100 + 1;
 				xx = (xx<1) ? 1 : xx;
-				xx = (xx>1.4) ? 1.4 : xx;
+				xx = (xx>1.1) ? 1.1 : xx;
 
 			var style = '';
 			for (var i = 0; i < State.vendors.length; i++) {
@@ -999,18 +1000,19 @@
 		$('body > svg').empty();
 
 		if (State.active != 'hexbin') {
-			randomX = d3.random.normal(State.width/2, 200),
+			randomX = d3.random.normal(State.width/2, 700),
 		    ps = d3.range(1024).map(function() { return randomX(); });
 		}
 
 		State.active = 'hexbin';
-		points = d3.zip(ps, c.normalize(State.height, 100));
+		points = d3.zip(ps, c.normalize(State.height, 0));
 		//randomY = d3.random.normal(height / 2, 300),
 		//points = d3.range(2000).map(function() { return [randomX(), randomY()]; });
 
 		color = d3.scale.linear()
 		    .domain([0, 20])
-		    .range(["black", "white"])
+		    //.range(["black", "white"])
+		    .range([$('.dotstyle li.current a').css('background-color'), $('.dotstyle li.current a').css('background-color')])
 		    .interpolate(d3.interpolateLab);
 
 		hexbin = d3.hexbin()
@@ -1018,17 +1020,19 @@
 		    .radius(50);
 
 		radius = d3.scale.linear()
-		    .domain([0, 10])
-		    .range([0, 60]);
+		    .domain([0, 20])
+		    .range([0, 130]);
 
 		svg.append("g")
 		  .selectAll(".hexagon")
 		    .data(hexbin(points))
 		  .enter().append("path")
 		    .attr("class", "hexagon")
+		    .attr("id", "hexx")
     		.attr("d", function(d) { return hexbin.hexagon(radius(d.length)); })
 		    .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
-		    .style("fill", function(d) { return color(d.length); });
+		    .style("fill", function(d) { return color(d.length); })
+		    .style("opacity", function(d) { return 0.8-(radius(d.length)/180); });
 
 		};
 	r.hexbin_thumb = function() {
@@ -1229,6 +1233,7 @@
 		State.height = $(window).height();
 		State.trigger = State.active;
 		$('body > svg').attr("width", State.width).attr("height", State.height);
+		//  $('.icon-expand').removeClass('icon-contract');
 		};
 	h.stop = function(e) {
 	    e.stopPropagation();

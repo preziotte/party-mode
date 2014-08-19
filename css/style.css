@@ -6,7 +6,6 @@
 html {
   background-color: #A6554B;
   overflow: hidden;
-
   -webkit-transition: background-color 0.5s ease;
      -moz-transition: background-color 0.5s ease;
        -o-transition: background-color 0.5s ease;
@@ -220,7 +219,7 @@ html.theme_1 .dotstyle li a, html.theme_3 .dotstyle li a {
 }
 
 .dotstyle li a.one {
-  background-color: #000;
+  background-color: #fff;
 }
 
 .dotstyle li a.two {
@@ -281,6 +280,78 @@ html.theme_1 .dotstyle li a, html.theme_3 .dotstyle li a {
        -o-transition: opacity .3s linear;
           transition: opacity .3s linear;
 }
+
+
+/* tooltip - http://www.cssportal.com/css-tooltip-generator/ */
+/* ----------------------------------------------------------*/
+
+.slider span, .icon-loop-on span {
+  position: absolute;
+  width:130px;
+  color: #FFFFFF;
+  background: #000000;
+  height: 25px;
+  line-height: 25px;
+  text-align: center;
+  visibility: hidden;
+  border-radius: 3px;
+  font-size: 12px;
+  opacity: 0;
+  -webkit-transition: opacity .3s linear;
+     -moz-transition: opacity .3s linear;
+       -o-transition: opacity .3s linear;
+          transition: opacity .3s linear;
+
+}
+.slider span:after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -8px;
+  width: 0; height: 0;
+  border-bottom: 8px solid #000000;
+  border-right: 8px solid transparent;
+  border-left: 8px solid transparent;
+  -webkit-transition: opacity .3s linear;
+     -moz-transition: opacity .3s linear;
+       -o-transition: opacity .3s linear;
+          transition: opacity .3s linear;
+}
+.slider:hover span {
+  visibility: visible;
+  opacity: 0.8;
+  top: 30px;
+  left: 50%;
+  margin-left: -76px;
+  z-index: 999;
+}
+
+.icon-loop-on span:after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-top: -8px;
+  width: 0; height: 0;
+  border-right: 8px solid #000000;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  -webkit-transition: opacity .3s linear;
+     -moz-transition: opacity .3s linear;
+       -o-transition: opacity .3s linear;
+          transition: opacity .3s linear;
+}
+.icon-loop-on:hover span {
+  visibility: visible;
+  opacity: 0.8;
+  left: 100%;
+  top: 50%;
+  margin-top: -12.5px;
+  margin-left: 15px;
+  z-index: 999;
+}
+
 /* /////////////////// */
 /* MENU STUFF //////// */
 /* /////////////////////////////////////////////////////////////////////////////////////////////// */
@@ -431,6 +502,15 @@ html.theme_1 .dotstyle li a, html.theme_3 .dotstyle li a {
 
 .menu .buffer {
   border: 0;
+  font-family: 'Helvetica Neue', 'Helvetica';
+  font-weight: lighter;
+  text-align: center;
+  letter-spacing: 7px;
+  font-size: 12px;
+  padding-top: 15px;
+  margin-bottom: -10px;
+}
+.menu .buffer:hover {
 }
 
 
@@ -544,6 +624,10 @@ svg .spin {
 }
 
 
+.hexagon {
+  stroke-width: 0;
+}
+
 /* THEME 1 STUFF */
 
 html.theme_1 {
@@ -576,6 +660,14 @@ html.theme_1 .isoco2, html.theme_1 .isoco3 {
   visibility: hidden;
 }
 
+html.theme_1 .hexagon {
+  stroke-width: 1;
+}
+
+html.theme_1 .spin {
+  opacity: 0.7;
+}
+
 html.theme_1 .graticule {
   fill: none;
   stroke: white;
@@ -603,6 +695,9 @@ html.theme_2 svg circle, html.theme_2 svg path, html.theme_2 svg rect, html.them
   opacity: .25;
 }
 
+html.theme_2 .hexagon {
+  stroke-width: 0;
+}
 html.theme_2 .graticule {
   fill: none;
   stroke: #5D4157;
@@ -612,6 +707,10 @@ html.theme_2 .graticule {
   stroke-dashoffset: 10px;
 }
 
+/*html.theme_2 .spin:nth-of-type(3n) {
+  stroke: #5D4157;
+}
+*/
 
 /* THEME 3 STUFF - http://www.colourlovers.com/palette/728391/Dig_My_Olive_Branch */
 
@@ -665,7 +764,16 @@ html.theme_4 svg circle:nth-of-type(2) {
   fill: #DFE3C8;
 }
 
-html.theme_4 path.hexagon {
+html.theme_4 .hexagon {
+  stroke-width: 0;
+}
+
+html.theme_4 .hexagon:nth-of-type(3n) {
+  stroke-width: 10px;
+}
+
+html.theme_4 .spin:nth-of-type(3n+1) {
+    stroke: #E4A57A;
 }
 
 html.theme_4 .graticule {
@@ -716,8 +824,12 @@ html.theme_5 svg rect.equal {
 }
 
 html.theme_5 .hexagon {
-  opacity: 0.2;
-  stroke-width: 25px;
+  stroke-width: 50px;
+  stroke-dasharray: 3px;
+}
+
+html.theme_5 .hexagon:nth-of-type(odd), html.theme_5 .hexagon:nth-of-type(3n), html.theme_5 .hexagon:nth-of-type(3n+1), html.theme_5 .hexagon:nth-of-type(7n), html.theme_5 .hexagon:nth-of-type(11n) {
+  display: none;
 }
 
 html.theme_5 .graticule {
@@ -727,6 +839,53 @@ html.theme_5 .graticule {
   opacity: 1;
 }
 
+
+/* menu svg overrides */
+
+html.theme_2 .menu svg * {
+  stroke-width: 0;
+  fill: #EBE3AA;
+}
+
+html.theme_2 .menu #grid svg * {
+  stroke-width: 1;
+}
+
+html.theme_3 .menu #icosahedron svg * {
+  opacity: 0.6;
+  stroke-width: 0;
+}
+
+html.theme_3 .menu #grid svg * {
+  stroke-width: 4;
+}
+
+html.theme_4 .menu svg * {
+  stroke-width: 0;
+}
+
+html.theme_4 .menu #grid svg * {
+  stroke-width: 1;
+}
+
+html.theme_5 .menu #icosahedron svg path {
+  opacity: 1;
+  stroke-width: 0;
+}
+html.theme_5 .menu #icosahedron svg path:nth-of-type(odd) {
+  fill: #E5FCC2;
+  opacity: 0.5;
+}
+
+html.theme_5 .menu #equal rect {
+  transform: skewY(30deg) translateY(-8px);
+}
+
+html.theme_5 .menu .hexagon {
+  stroke-width: 10px;
+  stroke-dasharray: 2px;
+  fill: none;
+}
 
 /* /////////////////// */
 /* ANIMATIONS STUFF // */

@@ -34,6 +34,7 @@
     </head>
 
     <body>
+        <div id="tooltip" class="tooltip"></div>
         <div class="md-modal md-effect-1" id="modal-about">
             <div class="md-content">
                 <!-- <h3>Credits</h3> -->
@@ -125,7 +126,7 @@
                 <li id='spin' viz-num='5'></li>
                 <li id='hexbin' viz-num='6'></li>
 <!--            <li id='voronoi' viz-num='7'></li> -->
-                <li class='buffer'></li>
+                <li class='buffer'>RETURN TO<br />preziotte.com</li>
 
             </ul>
         </div>
@@ -145,13 +146,13 @@
                     <i class="i icon-menu"></i>
                     <i class="i icon-question"></i> 
                     <i class="i icon-keyboard2"></i> 
-                    <i class="i icon-loop-on"></i> 
+                    <i class="i icon-loop-on"><span>cycle visualizations</span></i> 
 <!--                     <i class="i icon-volume-medium"></i> -->
                     <i class="i icon-github2"></i> 
                     <i class="i icon-expand"></i> 
                 </div>
 
-                <div class="slider">
+                <div class="slider"><span>adjust sensitivity</span>
                     <input min="1" max="100" value="20" id='slider' type="range">
                 </div>
 
