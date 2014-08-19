@@ -61,24 +61,69 @@ body {
 .i {
   z-index: 8;
   cursor: pointer;
+  display: inline-block;
+  opacity: 0.4;
+  color: white;
+  -webkit-transition: opacity .1s linear;
+     -moz-transition: opacity .1s linear;
+       -o-transition: opacity .1s linear;
+          transition: opacity .1s linear;
 }
+
+.i:hover {
+  opacity: 1
+}
+
 
 .icon-expand, .icon-loop-off, .icon-volume-medium, .icon-question, .icon-github2, .icon-keyboard2 {
-  font-size: 26px;
+  font-size: 25px;
   padding-top: 10px;
   margin-right: 4px;
-  color: white;
 }
 
+.icon-expand, .icon-contract {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  font-size: 21px;
+}
+
+.icon-question {
+  position: fixed;
+  bottom: 12px;
+  left: 12px;
+}
+
+.icon-keyboard2 {
+  position: fixed;
+  bottom: 12px;
+  left: 62px;
+}
+
+.icon-github2 {
+  position: fixed;
+  bottom: 12px;
+  left: 112px;
+}
+
+.icon-loop-off, .icon-loop-on {
+  position: fixed;
+  font-size: 31px;
+  bottom: 8px;
+  left: 156px;
+}
+
+.icon-loop-on {
+  bottom: 9px;
+}
 .icon-menu, .icon-knobs {
-  position: absolute;
-  top: 1px;
-  left: 1px;
-  font-size: 16px;
-  opacity: 1;
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  font-size: 32px;
+  opacity: 0.8;
   cursor: pointer;
   z-index: 4;
-  color: white;
   -webkit-font-smoothing: none;
   -webkit-transition: opacity .3s linear;
      -moz-transition: opacity .3s linear;
@@ -215,7 +260,7 @@ html.theme_1 .dotstyle li a, html.theme_3 .dotstyle li a {
 
 .dotstyle {
   position: absolute;
-  right: 0;
+  right: 11px;
   bottom: 20px;
   -webkit-transition: opacity .3s linear;
      -moz-transition: opacity .3s linear;
@@ -224,13 +269,17 @@ html.theme_1 .dotstyle li a, html.theme_3 .dotstyle li a {
 }
 
 
-#progressBar {
+.progressBar {
   height: 3px;
   background-color: white;
   opacity: 0.5;
   position: fixed;
   bottom: 0;
   left: 0;
+  -webkit-transition: opacity .3s linear;
+     -moz-transition: opacity .3s linear;
+       -o-transition: opacity .3s linear;
+          transition: opacity .3s linear;
 }
 /* /////////////////// */
 /* MENU STUFF //////// */
@@ -241,7 +290,7 @@ html.theme_1 .dotstyle li a, html.theme_3 .dotstyle li a {
   top: 0;
   left: 0;
   z-index: 3;
-  width: 20px;
+  width: 0px;
   height: 100%;
   max-height: 100%;
   background-color: black;
@@ -260,12 +309,6 @@ html.theme_1 .dotstyle li a, html.theme_3 .dotstyle li a {
 }
 
 .options {
-  width: 100%;
-  min-width: 200px;
-  height: 26px;
-  text-align: justify;
-  margin-top: 2px;
-  opacity: 0;
   -webkit-transition: opacity .1s linear;
      -moz-transition: opacity .1s linear;
        -o-transition: opacity .1s linear;
@@ -283,7 +326,7 @@ html.theme_1 .dotstyle li a, html.theme_3 .dotstyle li a {
   top: 0;
   z-index: 3;
   width: 100%;
-  height: 54px;
+  height: 63px;
   color: white;
   max-width: 100%;
   opacity: 0.8;
@@ -299,7 +342,7 @@ html.theme_1 .dotstyle li a, html.theme_3 .dotstyle li a {
 }
 
 .menu ul {
-  width: 246px;
+  width: 326px;
   max-height: 100%;
   padding-left: 20px;
   overflow-y: scroll;
@@ -309,7 +352,7 @@ html.theme_1 .dotstyle li a, html.theme_3 .dotstyle li a {
   display: block;
   padding: 10px;
   border: 2px solid white;
-  width: 180px;
+  width: 260px;
   height: 90px;
   margin-top: 10px;
   overflow: hidden;
@@ -331,7 +374,7 @@ html.theme_1 .dotstyle li a, html.theme_3 .dotstyle li a {
 .menu-open {
  opacity: 0.8;
   z-index: 6;
-  width: 224px;
+  width: 304px;
 }
 .menu-open .options {
   opacity: 1;
@@ -542,6 +585,14 @@ html.theme_1 .graticule {
 
 /* THEME 2 STUFF - http://www.colourlovers.com/palette/944213/forever_lost */
 
+html.theme_2 .i {
+  color: black;
+}
+
+html.theme_2 .progressBar {
+  background-color: black;
+}
+
 html.theme_2 {
   background-color: #EBE3AA;
 }
@@ -587,6 +638,14 @@ html.theme_3 .graticule {
 
 /* THEME 4 STUFF - http://www.colourlovers.com/palette/3406636/Just_Breathe */
 
+html.theme_4 .i {
+  color: black;
+}
+
+html.theme_4 .progressBar {
+  background-color: black;
+}
+
 html.theme_4 {
   background-color: #F4F0CD;
 }
@@ -617,6 +676,14 @@ html.theme_4 .graticule {
 
 
 /* THEME 5 STUFF - http://www.colourlovers.com/palette/443995/i_demand_a_pancake */
+
+html.theme_5 .i {
+  color: black;
+}
+
+html.theme_5 .progressBar {
+  background-color: black;
+}
 
 html.theme_5 {
   background-color: #9DE0AD;
@@ -776,7 +843,7 @@ html.theme_5 .graticule {
   width: 200px;
   position: absolute;
   right: 325px;
-  top: 9px;
+  top: 19px;
 }
 
 input[type="range"] {

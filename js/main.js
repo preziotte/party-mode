@@ -1,19 +1,4 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-// some subtle css color tweaks remain
-// convert icon font to inline svg
-// github check into
-// fullscreen/resize update
-// tooltip?
-// cross browse
-// grunt!
-// kick detector
-// favicon.ico
-// Made with ♥ in PDX
-// back to preziotte.com
-// http://www.chromeexperiments.com/submit/
-// legal audio?
-// play/pause spin animation
-
 
 (function () {
 
@@ -75,7 +60,7 @@
 		$('.icon-question').on(click, function() { h.showModal('#modal-about'); });
 		$('.icon-keyboard2').on(click, function() { h.showModal('#modal-keyboard'); });
 		$('.icon-volume-medium').on(click, function() { audio.muted = (audio.muted == true) ? false : true; });
-		$('.icon-github2').on(click, function() { window.open('http://github.com','_blank'); });
+		$('.icon-github2').on(click, function() { window.open('http://github.com/preziotte/party-mode','_blank'); });
 		$('.icon-loop-off').on(click, function() { h.infiniteChange(State.loopDelay[(State.loop++)%4]); });
 		$('.md-close').on(click, h.hideModals);
 		$('.dotstyle').on(click, 'li', function() { h.themeChange($(this).find('a').text()); });
@@ -1174,6 +1159,8 @@
 
 		if (!document.fullscreenElement &&    // alternative standard method
 		  !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
+
+		  	$('.icon-expand').addClass('icon-contract');
 			if (document.documentElement.requestFullscreen) {
 				document.documentElement.requestFullscreen();
 			} else if (document.documentElement.msRequestFullscreen) {
@@ -1184,6 +1171,7 @@
 				document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
 			}
 		} else {
+		  	$('.icon-expand').removeClass('icon-contract');
 			if (document.exitFullscreen) {
 				document.exitFullscreen();
 			} else if (document.msExitFullscreen) {
@@ -1204,6 +1192,7 @@
 		$('.icon-menu').addClass('fadeOut');
 		$('.menu-wide').addClass('fadeOut');
 		$('.menu').addClass('fadeOut');
+		$('#progressBar').addClass('fadeOut');
 		$('html').addClass('noCursor');
 
 		}
@@ -1213,6 +1202,7 @@
 		$('.icon-menu').removeClass('fadeOut');
 		$('.menu-wide').removeClass('fadeOut');
 		$('.menu').removeClass('fadeOut');
+		$('#progressBar').removeClass('fadeOut');
 		$('html').removeClass('noCursor');
 
 		}
