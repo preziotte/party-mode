@@ -110,7 +110,7 @@
 		Mousetrap.bind('f', h.toggleFullScreen); 
 		Mousetrap.bind('m', function() { h.toggleMenu('toggle') }); 
 		Mousetrap.bind('c', function() { if (audio) audio.src = 'mp3/'+State.playlist[Math.floor(Math.random() * State.playlist.length)] });
-		Mousetrap.bind('l', function() { $('.icon-loop-off').trigger('click'); });
+		Mousetrap.bind('l', function() { $('.icon-loop-on').trigger('click'); });
 		Mousetrap.bind('k', function() { $('.icon-keyboard2').trigger('click'); });
 
 		Mousetrap.bind('1', function() { State.trigger = 'circle'; });
