@@ -303,6 +303,9 @@ html.theme_1 .dotstyle li a, html.theme_3 .dotstyle li a {
           transition: opacity .3s linear;
 
 }
+.icon-loop-on span {
+  width: 230px;
+}
 .slider span:after {
   content: '';
   position: absolute;

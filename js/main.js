@@ -17,21 +17,24 @@
 			width : $(document).width(),
 			height : $(document).height(),
 			vendors : ['-webkit-', '-moz-', '-o-', ''],
-			drawInterval: 1000/24,								// 1000ms divided by max framerate
-			then: Date.now(),									// last time a frame was drawn
-			trigger: 'circle',									// default visualization
-			active: null,										// active visualization
-			vizNum: 0,											// active visualization (index number)
-			thumbs_init: [0,0,0,0,0,0,0,0],						// are thumbnails initialized?
-			theme: 0, 											// default color palette
-			loop: 1,											// current loop index
-			loopDelay: [null,20000,5000,1000],					// array of loop options
-			changeInterval: null,								// initialize looping setInterval id
-			sliderVal: 50,										// value of html5 slider
-			canKick: true,										// rate limits auto kick detector
+			drawInterval: 1000/24,										// 1000ms divided by max framerate
+			then: Date.now(),											// last time a frame was drawn
+			trigger: 'circle',											// default visualization
+			active: null,												// active visualization
+			vizNum: 0,													// active visualization (index number)
+			thumbs_init: [0,0,0,0,0,0,0,0],								// are thumbnails initialized?
+			theme: 0, 													// default color palette
+			loop: 1,													// current loop index
+			loopDelay: [null,20000,5000,1000],							// array of loop options
+			loopText: ['off', 'every 20s', 'every 5s', 'every 1s'],
+			changeInterval: null,										// initialize looping setInterval id
+			sliderVal: 50,												// value of html5 slider
+			canKick: true,												// rate limits auto kick detector
 			debug: (window.location.href.indexOf("debug") > -1) ? true : false
 		};
 		root.State = s;
+
+		root.context = new (window.AudioContext || window.webkitAudioContext)();
 
 		// append main svg element
 		root.svg = d3.select("body").append("svg").attr('id', 'viz')
@@ -62,7 +65,10 @@
 		$('.icon-keyboard2').on(click, function() { h.showModal('#modal-keyboard'); });
 		$('.icon-volume-medium').on(click, function() { audio.muted = (audio.muted == true) ? false : true; });
 		$('.icon-github2').on(click, function() { window.open('http://github.com/preziotte/party-mode','_blank'); });
-		$('.icon-loop-off').on(click, function() { h.infiniteChange(State.loopDelay[(State.loop++)%4]); });
+		$('.icon-loop-on').on(click, function() { 
+			$(this).find('b').text(State.loopText[(State.loop)%4]);
+			h.infiniteChange(State.loopDelay[(State.loop++)%4]); 
+		});
 		$('.md-close').on(click, h.hideModals);
 		$('.dotstyle').on(click, 'li', function() { h.themeChange($(this).find('a').text()); });
 		$('#slider').on('input change', function() { analyser.smoothingTimeConstant = 1-(this.value/100); }); 
@@ -150,6 +156,7 @@
 		console.log('h.bindFileToAudio fired');
 
 		audio = new Audio();
+		//audio.remove();
 		audio.src = f; 
 	    audio.controls = true;
 	    audio.loop = true;
@@ -161,11 +168,9 @@
 
 		};
 	a.audioBullshit = function (data) {
+		// uses web audio api to expose waveform data
 		console.log("a.audioBullshit fired");
 
-		// use web audio api to expose waveform data
-
-		root.context = new (window.AudioContext || window.webkitAudioContext)();
 		root.analyser = context.createAnalyser();
         //analyser.smoothingTimeConstant = .4; // .8 default
 		
@@ -185,6 +190,7 @@
 		a.frameLooper();
 		};
 	a.findAudio = function() {
+		// unused.
 		console.log("a.findAudio fired");
 
 		$('video, audio').each(function() {
@@ -744,8 +750,8 @@
 		$('body > svg').empty();
 
 		projection = d3.geo.gnomonic()
-		    .clipAngle(80);
-		    //.scale(50)
+		    .clipAngle(80)
+		    .scale(500);
 
 		path = d3.geo.path()
 		    .projection(projection);
@@ -1189,7 +1195,7 @@
 		}
 	h.hideHUD = function() {
 		//$('.icon-knobs').is(':hover') || 
-		if ($('#mp3_player').is(':hover') || $('.dotstyle').is(':hover') || $('.slider').is(':hover'))
+		if ($('#mp3_player').is(':hover') || $('.dotstyle').is(':hover') || $('.slider').is(':hover') || $('.icon-expand').is(':hover') || $('.icon-github2').is(':hover') || $('.icon-loop-on').is(':hover') || $('.icon-question').is(':hover') || $('.icon-keyboard2').is(':hover'))
 			return;
 
 		$('#mp3_player').addClass('fadeOut');
@@ -1231,9 +1237,12 @@
 		console.log('h.resize fired');		
 	    State.width = $(window).width();
 		State.height = $(window).height();
-		State.trigger = State.active;
+		State.active = State.trigger;
 		$('body > svg').attr("width", State.width).attr("height", State.height);
-		//  $('.icon-expand').removeClass('icon-contract');
+
+		var full = document.fullscreen || document.webkitIsFullScreen || document.mozFullScreen;
+		if (!full) $('.icon-expand').removeClass('icon-contract');
+
 		};
 	h.stop = function(e) {
 	    e.stopPropagation();
@@ -1253,6 +1262,8 @@
 			console.log("not audio file");
 			return;
 		}
+
+    	h.readID3(file);
 
     	var objectUrl = URL.createObjectURL(file);
     	a.bindFileToAudio(objectUrl);
@@ -1287,8 +1298,36 @@
 			   //  	}
 		
 		};
+	h.readID3 = function(file) {
+
+		ID3.loadTags(file.urn ||file.name, function() {
+		    var tags = ID3.getAllTags(file.urn ||file.name);
+		    console.log(tags);
+		    console.log(tags.artist);
+		    console.log(tags.album);
+		    console.log(tags.title);
+		    if( "picture" in tags ) {
+		    	var image = tags.picture;
+		    	var base64String = "";
+		    	for (var i = 0; i < image.data.length; i++) {
+		    		base64String += String.fromCharCode(image.data[i]);
+		    	}
+		    	console.log("data:" + image.format + ";base64," + window.btoa(base64String));
+		    	//$("art").src = "data:" + image.format + ";base64," + window.btoa(base64String);
+		    	//$("art").style.display = "block";
+		    } 
+		    else {
+		    	console.log("nope.");
+		    	//$("art").style.display = "none";
+		    }
+		}, {
+		    dataReader: FileAPIReader(file)
+		});
+
+		};
 
 	h.themeChange = function(n) {
+		n = +n;
 		n  = (n<0) ? 5 : n;
 		n  = (n>5) ? 0 : n;
 		State.theme = n;

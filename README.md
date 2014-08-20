@@ -5,13 +5,12 @@ An experimental music visualizer using d3.js and the web audio api.  Working dem
 
 TODO
 ====
-- fullscreen/resize updates center coords
+- read id3 tags + show widget
 - record some cool motion screencaps
-- play/pause spin animation
 
+- play/pause spin animation
 - cross browse
 - auto detect mp3s in folder
-- read id3 tags + show widget
 - debug on ipad
 - grunt
 - http://www.chromeexperiments.com/submit/
@@ -21,3 +20,4 @@ IDEAS
 - chrome extension
 - a kick detector
 - hook up to an audio api?
+- chromes webkitRequestFileSystem
