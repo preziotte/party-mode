@@ -244,7 +244,9 @@ html.theme_1 .dotstyle li a, html.theme_3 .dotstyle li a {
 
 .dotstyle-scaleup li a {
   -webkit-transition: -webkit-transform 0.3s ease, background-color 0.3s ease;
-  transition: transform 0.3s ease, background-color 0.3s ease;
+     -moz-transition: -moz-transform 0.3s ease, background-color 0.3s ease;
+       -o-transition: -o-transform 0.3s ease, background-color 0.3s ease;
+          transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .dotstyle-scaleup li a:hover,
@@ -254,7 +256,10 @@ html.theme_1 .dotstyle li a, html.theme_3 .dotstyle li a {
 
 .dotstyle-scaleup li.current a {
   -webkit-transform: scale(1.5);
-  transform: scale(1.5);
+     -moz-transform: scale(1.5);
+      -ms-transform: scale(1.5);
+       -o-transform: scale(1.5);
+          transform: scale(1.5);
 }
 
 .dotstyle {
@@ -512,8 +517,6 @@ html.theme_1 .dotstyle li a, html.theme_3 .dotstyle li a {
   font-size: 12px;
   padding-top: 15px;
   margin-bottom: -10px;
-}
-.menu .buffer:hover {
 }
 
 
