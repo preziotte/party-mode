@@ -300,6 +300,8 @@ html.theme_1 .dotstyle li a, html.theme_3 .dotstyle li a {
   text-align: center;
   visibility: hidden;
   border-radius: 3px;
+  font-family: 'Helvetica Neue', Helvetica;
+  font-weight: 300;
   font-size: 12px;
   opacity: 0;
   -webkit-transition: opacity .3s linear;
@@ -436,6 +438,8 @@ html.theme_1 .dotstyle li a, html.theme_3 .dotstyle li a {
   margin-top: 10px;
   overflow: hidden;
   cursor: pointer;
+  z-index: 2;
+  position: relative;
 }
 
 .fade {
