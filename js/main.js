@@ -13,7 +13,7 @@
 
 		// globals & state
 		var s = {
-			playlist: ['benares.mp3', 'analog.mp3', 'bless.mp3', 'forgot.mp3', 'radio.mp3', 'selftanner.mp3', 'startshootin.mp3', 'track1.mp3', 'holdin.m4a', 'waiting.mp3', 'dawn.mp3', 'stop.mp3', 'settle.mp3', 'crackers.mp3', 'nuclear.mp3', 'madness.mp3', 'magoo.mp3', 'around.mp3', 'where.mp3', 'bird.mp3', 'notes.mp3'],
+			playlist: ['forgot.mp3', 'stop.mp3', 'bless.mp3', 'benares.mp3', 'radio.mp3', 'selftanner.mp3', 'startshootin.mp3', 'track1.mp3', 'holdin.m4a', 'waiting.mp3', 'dawn.mp3', 'analog.mp3', 'settle.mp3', 'crackers.mp3', 'nuclear.mp3', 'madness.mp3', 'magoo.mp3', 'around.mp3', 'where.mp3', 'bird.mp3', 'notes.mp3'],
 			width : $(document).width(),
 			height : $(document).height(),
 			vendors : ['-webkit-', '-moz-', '-o-', ''],
@@ -58,6 +58,7 @@
 		$('.menu, .icon-menu').on('mouseenter touchstart', function() { h.toggleMenu('open'); });
 		$('.menu').on('mouseleave', function() { h.toggleMenu('close'); });
 		$('.menu').on(click, 'li', function() { h.vizChange(+$(this).attr('viz-num')); });
+		$('.menu').on(click, '.clicker', function() { h.vizChange(+$(this).closest('li').attr('viz-num')); });
 		$('.buffer').on(click, function() { window.location.href='http://preziotte.com' });
 		$('.wrapper').on(click, function() { h.toggleMenu('close'); });
 		$('.icon-expand').on(click, h.toggleFullScreen);

@@ -131,6 +131,7 @@ body {
 }
 
 .icon-headphones, .icon-keyboard {
+  margin-top: 10px;
   font-size: 128px;
   color: white;
   float: right;
@@ -489,6 +490,16 @@ html.theme_1 .dotstyle li a, html.theme_3 .dotstyle li a {
 
 .menu svg {
   position: relative;
+  top: -90px;
+  left: 0;
+}
+.clicker {
+  position: relative;
+  top: 0;
+  left: 0;
+  min-width: 260px;
+  min-height: 90px;
+  z-index: 4000;
 }
 .menu svg circle, .menu svg rect, .menu svg path, .menu svg line {
   opacity: 1;
