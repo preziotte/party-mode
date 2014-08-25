@@ -2,11 +2,21 @@
 <img src="https://raw.githubusercontent.com/preziotte/party-mode/master/img/1-logo.gif"/>
 </p>
 
-An experimental music visualizer using d3.js and the web audio api.  Working demo @ http://preziotte.com/partymode.
-
+An audio visualizer experiment for the browser.  Powered by [d3.js](https://github.com/mbostock/d3) and the [web audio api](http://www.w3.org/TR/webaudio/).  Runs best in Chrome.  Working demo @ http://preziotte.com/partymode.  Try dragging in an mp3 from your desktop!  
 
 ###*** *If anything deserves an epilepsy warning, it'd be this.* ***
 
+somewhat-technical overview
+=========================
+Using the web audio api, I can get an array of numbers which corresponds to the waveform of the sound an html5 audio element is producing.  There's a [good tutorial](http://www.developphp.com/view.php?tid=1348) on how to do this.  Then, using `requestAnimationFrame` (with a little [frame limiting](http://codetheory.in/controlling-the-frame-rate-with-requestanimationframe/) for performance reasons) I'm updating that array as the music changes.  I then normalize the data a bit (or transform it slightly depending on the visualization) and redraw the screen based on the updated array.  I'm using [d3.js](https://github.com/mbostock/d3) to draw and redraw SVG based on the normalized data.  Each visualization uses the data differently -- it was mostly trial and error to get some stuff I liked looking at.  
+
+Since I'm using D3 -- which is just drawing SVG -- everything is styled with CSS.  There are a handful of differently colored themes for each visualization, and I do some rudimentary CSS namespacing by updating a class applied to the `html` element.  eg. `<html class='theme_1'>`. This easily lets me override everything pretty trivially.  I can add some additional variation to each theme messing with some pseudo selectors.  For example, I can use `:nth-of-type` to hide every nth SVG rectangle or making every odd child have a different opacity, etc.
+
+Mousetrap.js handles my keyboard shortcuts brilliantly, and jQuery always makes life easier.
+
+I developed this primarily in Chrome.  Other modern browsers still have some interesting issues (see known issues).  I've found that WebKit seems to have the [most competent](https://www.mapbox.com/osmdev/2012/11/20/getting-serious-about-svg/) implementation of SVG.  And specifically Chrome seems to play the nicest with the html5 audio element.  For my purposes at least.  Running this can easily strain my four year old MacBook's CPU, but I think I'm pushing several things beyond what they were intended for with this thing.  Not complaining.
+
+Markup lies in `index.html`, javascript is in `js/main.js` and style in `css/style.css`.  I can go into more detail if there's demand for it.
 
 todo
 ====
@@ -18,51 +28,49 @@ todo
 
 ideas
 =====
-- chrome extension -- hijack audio from any page and overlay visualizer
-- chrome app -- performance seems to be better when files are local
-- auto-detect big changes in song (amplitude deltas / allow rate limiting / average threshold over time if desired)
+- make it a chrome extension -- hijack audio from any page and overlay visualizer.  would have to sandbox it in an iframe and then pass audio data into it..
+- make it a chrome app -- since performance seems to be better when files are local
+- auto-detect big changes in song (amplitude deltas / allow rate limiting / average threshold over time if desired) to trigger arbitrary things
 - hook up to 3rd party music service such as soundcloud / spotify / pandora
 - auto detect all mp3s in local folder (chromes `webkitRequestFileSystem`?)
 
 known issues
 ============
-- does not play locally in firefox
-- firefox `transform-origin: center` not implimented
+- doesn't play when running locally in firefox
+- firefox `transform-origin: center` not implimented ([mozilla bug](https://bugzilla.mozilla.org/show_bug.cgi?id=923193))
 - opera `document.querySelector('audio').error` returns 4 (MEDIA_ERR_SRC_NOT_SUPPORTED)
+- safari's AudioContext `.createMediaElementSource()` method not implemented -- so no progressive loading
 - safari freezes when returning from fullscreen
-- safari doesnt have AudioContext `.createMediaElementSource()` method implemented -- so no progressive loading
-- safari dragndrop issue
+- safari drag-n-drop issue
+- safari defer loading animation
+- safari play/pause
 
-credits & inspiration
-=====================
+help & inspiration
+==================
 - <a target='_blank' href='http://bost.ocks.org/mike/'>Mike Bostock</a>'s, bl.ocks: 
 <a target='_blank' href='http://bl.ocks.org/mbostock/7782500'>#7782500</a>, 
 <a target='_blank' href='http://bl.ocks.org/mbostock/3795048'>#3795048</a>, 
 <a target='_blank' href='http://bl.ocks.org/mbostock/4248145'>#4248145</a>, 
 <a target='_blank' href='http://bl.ocks.org/mbostock/7782500'>#7782500</a>
-- <a target="_blank" href='https://stackoverflow.com/questions/13368046/how-to-normalize-a-list-of-positive-numbers-in-javascript'>Stack Overflow</a>, 
-- <a target='_blank' href='http://codetheory.in/controlling-the-frame-rate-with-requestanimationframe/'>Code Theory</a>, 
-- <a target='_blank' href='http://craig.is/killing/mice'>Mousetrap.js</a>, 
-- <a target='_blank' href='https://jquery.com/'>jQuery</a>, and 
-<a target='_blank' href='http://www.developphp.com/view.php?tid=1348'>DevelopPHP</a>. 
-<a target='_blank' href='http://www.michael-gerhaeuser.de/?f=fileapi/readme.html'>Michael Gerhaeuser</a>, 
-<a target='_blank' href='http://lostechies.com/derickbailey/2013/09/23/getting-audio-file-information-with-htmls-file-api-and-audio-element/'>Los Techies</a>
+- <a target="_blank" href='https://stackoverflow.com/questions/13368046/how-to-normalize-a-list-of-positive-numbers-in-javascript'>Stack Overflow</a>
+- <a target='_blank' href='http://codetheory.in/controlling-the-frame-rate-with-requestanimationframe/'>Code Theory</a>
+- <a target='_blank' href='http://craig.is/killing/mice'>Mousetrap.js</a> and <a target='_blank' href='https://jquery.com/'>jQuery</a>
+- <a target='_blank' href='http://www.developphp.com/view.php?tid=1348'>DevelopPHP</a>
+- <a target='_blank' href='http://www.michael-gerhaeuser.de/?f=fileapi/readme.html'>Michael Gerhaeuser</a>
+- <a target='_blank' href='http://lostechies.com/derickbailey/2013/09/23/getting-audio-file-information-with-htmls-file-api-and-audio-element/'>Los Techies</a>
 - Codrops [<a target='_blank' href='http://tympanus.net/Development/ModalWindowEffects/'>1</a>] 
-[<a target='_blank' href='hhttp://tympanus.net/codrops/2014/01/21/dot-navigation-styles/'>2</a>] 
-ColourLovers [<a target='_blank' href='http://www.colourlovers.com/palette/3406603/Sunset_at_Bayinbuluk'>1</a>] 
+[<a target='_blank' href='http://tympanus.net/codrops/2014/01/21/dot-navigation-styles/'>2</a>] 
+- ColourLovers [<a target='_blank' href='http://www.colourlovers.com/palette/3406603/Sunset_at_Bayinbuluk'>1</a>] 
 [<a target='_blank' href='http://www.colourlovers.com/palette/944213/forever_lost'>2</a>] 
 [<a target='_blank' href='http://www.colourlovers.com/palette/728391/Dig_My_Olive_Branch'>3</a>] 
 [<a target='_blank' href='http://www.colourlovers.com/palette/3406636/Just_Breathe'>4</a>] 
 [<a target='_blank' href='http://www.colourlovers.com/palette/443995/i_demand_a_pancake'>5</a>]
-- <a target='_blank' href='http://codepen.io/aronwoost/pen/nlyrf'>aronwoost</a>, 
-- <a target="_blank" href='https://news.ycombinator.com/item?id=2299806'>Dustin Cartwright</a>, 
+- <a target='_blank' href='http://codepen.io/aronwoost/pen/nlyrf'>aronwoost</a>
+- <a target="_blank" href='https://news.ycombinator.com/item?id=2299806'>Dustin Cartwright</a>
 - <a target="_blank" href='http://matthewlein.com/ceaser/'>Ceaser</a>
 - Headphones by Kevin Hipke and Record by Juan Pablo Bravo from 
 <a target='_blank' href='thenounproject.com'>The Noun Project</a> 
-- <a target='_blank', href='http://icomoon.io/app/'>icomoon</a>, 
-- iconmelon, 
-fontello, 
-iconmonstr.
+- <a target='_blank' href='http://icomoon.io/app/'>icomoon</a> (iconmelon, fontello, and iconmonstr are all pretty rad).
 
 cool gifs
 ==========
