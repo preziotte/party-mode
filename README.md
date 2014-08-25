@@ -47,14 +47,12 @@ known issues
 
 help & inspiration
 ==================
-- <a target='_blank' href='http://bost.ocks.org/mike/'>Mike Bostock</a>'s, bl.ocks: 
+- <a target='_blank' href='d3js.org'>D3</a>, and bl.ocks  
 <a target='_blank' href='http://bl.ocks.org/mbostock/7782500'>#7782500</a>, 
 <a target='_blank' href='http://bl.ocks.org/mbostock/3795048'>#3795048</a>, 
 <a target='_blank' href='http://bl.ocks.org/mbostock/4248145'>#4248145</a>, 
-<a target='_blank' href='http://bl.ocks.org/mbostock/7782500'>#7782500</a>
-- <a target="_blank" href='https://stackoverflow.com/questions/13368046/how-to-normalize-a-list-of-positive-numbers-in-javascript'>Stack Overflow</a>
+<a target='_blank' href='http://bl.ocks.org/mbostock/4248146'>#4248146</a>
 - <a target='_blank' href='http://codetheory.in/controlling-the-frame-rate-with-requestanimationframe/'>Code Theory</a>
-- <a target='_blank' href='http://craig.is/killing/mice'>Mousetrap.js</a> and <a target='_blank' href='https://jquery.com/'>jQuery</a>
 - <a target='_blank' href='http://www.developphp.com/view.php?tid=1348'>DevelopPHP</a>
 - <a target='_blank' href='http://www.michael-gerhaeuser.de/?f=fileapi/readme.html'>Michael Gerhaeuser</a>
 - <a target='_blank' href='http://lostechies.com/derickbailey/2013/09/23/getting-audio-file-information-with-htmls-file-api-and-audio-element/'>Los Techies</a>
@@ -69,7 +67,9 @@ help & inspiration
 - <a target="_blank" href='https://news.ycombinator.com/item?id=2299806'>Dustin Cartwright</a>
 - <a target="_blank" href='http://matthewlein.com/ceaser/'>Ceaser</a>
 - Headphones by Kevin Hipke and Record by Juan Pablo Bravo from 
-<a target='_blank' href='thenounproject.com'>The Noun Project</a> 
+<a target='_blank' href='http://thenounproject.com'>The Noun Project</a> 
+- <a target="_blank" href='https://stackoverflow.com/questions/13368046/how-to-normalize-a-list-of-positive-numbers-in-javascript'>Stack Overflow</a>
+- <a target='_blank' href='http://craig.is/killing/mice'>Mousetrap.js</a> and <a target='_blank' href='https://jquery.com/'>jQuery</a>
 - <a target='_blank' href='http://icomoon.io/app/'>icomoon</a> (iconmelon, fontello, and iconmonstr are all pretty rad).
 
 cool gifs
