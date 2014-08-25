@@ -8,11 +8,11 @@ An audio visualizer experiment for the browser.  Powered by [d3.js](https://gith
 
 somewhat-technical overview
 =========================
-Using the web audio api, I can get an array of numbers which corresponds to the waveform of the sound an html5 audio element is producing.  There's a [good tutorial](http://www.developphp.com/view.php?tid=1348) on how to do this.  Then, using `requestAnimationFrame` (with a little [frame limiting](http://codetheory.in/controlling-the-frame-rate-with-requestanimationframe/) for performance reasons) I'm updating that array as the music changes.  I then normalize the data a bit (or transform it slightly depending on the visualization) and redraw the screen based on the updated array.  I'm using [d3.js](https://github.com/mbostock/d3) to draw and redraw SVG based on the normalized data.  Each visualization uses the data differently -- it was mostly trial and error to get some stuff I liked looking at.  
+Using the web audio api, I can get an array of numbers which corresponds to the waveform of the sound an html5 audio element is producing.  There's a [good tutorial](http://www.developphp.com/view.php?tid=1348) on how to do this.  Then, using `requestAnimationFrame` (with a little [frame limiting](http://codetheory.in/controlling-the-frame-rate-with-requestanimationframe/) for performance reasons) I'm updating that array as the music changes.  I then normalize the data a bit (or transform it slightly depending on the visualization) and redraw the screen based on the updated array.  I'm using [d3.js](https://github.com/mbostock/d3) to draw and redraw SVG based on this normalized data.  Each visualization uses the data a bit differently -- it was mostly trial and error to get some stuff I liked looking at.  
 
-Since I'm using D3 -- which is just drawing SVG -- everything is styled with CSS.  There are a handful of differently colored themes for each visualization, and I do some rudimentary CSS namespacing by updating a class applied to the `html` element.  eg. `<html class='theme_1'>`. This easily lets me override everything pretty trivially.  I can add some additional variation to each theme messing with some pseudo selectors.  For example, I can use `:nth-of-type` to hide every nth SVG rectangle or making every odd child have a different opacity, etc.
+Since I'm using D3 -- which is just drawing SVG -- I was able to style everything in CSS.  There are a handful of differently colored themes for each visualization, and I do some rudimentary CSS namespacing by updating a class applied to the `html` element.  eg. `<html class='theme_1'>`. This lets me override or substitute CSS rules pretty trivially.  I can add some additional variation to each theme by messing with pseudo selectors.  For example, I can use `:nth-of-type` to hide every nth SVG rectangle or making every odd child have a different `stroke-dasharray`, etc.
 
-Mousetrap.js handles my keyboard shortcuts brilliantly, and jQuery always makes life easier.
+Mousetrap.js handles my keyboard shortcuts brilliantly, and jQuery made life easier.
 
 I developed this primarily in Chrome.  Other modern browsers still have some interesting issues (see known issues).  I've found that WebKit seems to have the [most competent](https://www.mapbox.com/osmdev/2012/11/20/getting-serious-about-svg/) implementation of SVG.  And specifically Chrome seems to play the nicest with the html5 audio element.  For my purposes at least.  Running this can easily strain my four year old MacBook's CPU, but I think I'm pushing several things beyond what they were intended for with this thing.  Not complaining.
 
@@ -20,10 +20,10 @@ Markup lies in `index.html`, javascript is in `js/main.js` and style in `css/sty
 
 todo
 ====
-- read id3 tags & show widget when new song starts
+- read id3 tags of audio files & show a little widget when a new song starts
 - play/pause ui signifier
-- debug on ipad?
-- grunt
+- debug on ipad..
+- some grunt
 - http://www.chromeexperiments.com/submit/
 
 ideas
@@ -32,13 +32,13 @@ ideas
 - make it a chrome app -- since performance seems to be better when files are local
 - auto-detect big changes in song (amplitude deltas / allow rate limiting / average threshold over time if desired) to trigger arbitrary things
 - hook up to 3rd party music service such as soundcloud / spotify / pandora
-- auto detect all mp3s in local folder (chromes `webkitRequestFileSystem`?)
+- auto detect all mp3s in local folder and display a playlist (chromes `webkitRequestFileSystem`?)
 
 known issues
 ============
 - doesn't play when running locally in firefox
-- firefox `transform-origin: center` not implimented ([mozilla bug](https://bugzilla.mozilla.org/show_bug.cgi?id=923193))
-- opera `document.querySelector('audio').error` returns 4 (MEDIA_ERR_SRC_NOT_SUPPORTED)
+- firefox `transform-origin: center` not implemented ([mozilla bug](https://bugzilla.mozilla.org/show_bug.cgi?id=923193))
+- opera `document.querySelector('audio').error` returns 4 (MEDIA_ERR_SRC_NOT_SUPPORTED).
 - safari's AudioContext `.createMediaElementSource()` method not implemented -- so no progressive loading
 - safari freezes when returning from fullscreen
 - safari drag-n-drop issue
