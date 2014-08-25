@@ -10,7 +10,7 @@ somewhat-technical overview
 =========================
 Using the web audio api, I can get an array of numbers which corresponds to the waveform of the sound an html5 audio element is producing.  There's a [good tutorial](http://www.developphp.com/view.php?tid=1348) on how to do this.  Then, using `requestAnimationFrame` (with a little [frame limiting](http://codetheory.in/controlling-the-frame-rate-with-requestanimationframe/) for performance reasons) I'm updating that array as the music changes.  I then normalize the data a bit (or transform it slightly depending on the visualization) and redraw the screen based on the updated array.  I'm using [d3.js](https://github.com/mbostock/d3) to draw and redraw SVG based on this normalized data.  Each visualization uses the data a bit differently -- it was mostly trial and error to get some stuff I liked looking at.  
 
-Since I'm using D3 -- which is just drawing SVG -- I was able to style everything in CSS.  There are a handful of differently colored themes for each visualization, and I do some rudimentary CSS namespacing by updating a class applied to the `html` element.  eg. `<html class='theme_1'>`. This lets me override or substitute CSS rules pretty trivially.  I can add some additional variation to each theme by messing with pseudo selectors.  For example, I can use `:nth-of-type` to hide every nth SVG rectangle or making every odd child have a different `stroke-dasharray`, etc.
+Since I'm using D3 -- which is just drawing SVG -- I was able to style everything in CSS (no images are used at all, including icons).  There are a handful of differently colored themes for each visualization, and I do some rudimentary CSS namespacing by updating a class applied to the `html` element.  eg. `<html class='theme_1'>`. This lets me override or substitute CSS rules pretty trivially.  I can add some additional variation to each theme by messing with pseudo selectors.  For example, I can use `:nth-of-type` to hide every nth SVG rectangle or making every odd child have a different `stroke-dasharray`, etc.
 
 Mousetrap.js handles my keyboard shortcuts brilliantly, and jQuery made life easier.
 
@@ -47,8 +47,7 @@ known issues
 
 help & inspiration
 ==================
-- <a target='_blank' href='d3js.org'>D3</a>, and bl.ocks  
-<a target='_blank' href='http://bl.ocks.org/mbostock/7782500'>#7782500</a>, 
+- <a target='_blank' href='d3js.org'>D3</a>, and bl.ocks <a target='_blank' href='http://bl.ocks.org/mbostock/7782500'>#7782500</a>, 
 <a target='_blank' href='http://bl.ocks.org/mbostock/3795048'>#3795048</a>, 
 <a target='_blank' href='http://bl.ocks.org/mbostock/4248145'>#4248145</a>, 
 <a target='_blank' href='http://bl.ocks.org/mbostock/4248146'>#4248146</a>
