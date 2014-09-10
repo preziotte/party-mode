@@ -182,6 +182,7 @@
 	        source.noteOn(0);
 	    }
 	    else {
+	    	// https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createScriptProcessor
 	 		root.source = context.createMediaElementSource(audio);  // doesn't seem to be implemented in safari :(
 	    }
 

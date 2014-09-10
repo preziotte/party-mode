@@ -22,9 +22,8 @@ todo
 ====
 - read id3 tags of audio files & show a little widget when a new song starts
 - play/pause ui signifier
-- debug on ipad..
-- some grunt
-- http://www.chromeexperiments.com/submit/
+- debug on ipad
+- grunt uglify & concat css+js
 
 ideas
 =====
@@ -38,11 +37,11 @@ known issues
 ============
 - doesn't play when running locally in firefox
 - firefox `transform-origin: center` not implemented ([mozilla bug](https://bugzilla.mozilla.org/show_bug.cgi?id=923193))
-- opera `document.querySelector('audio').error` returns 4 (MEDIA_ERR_SRC_NOT_SUPPORTED).
+- opera `document.querySelector('audio').error` returns 4 (MEDIA_ERR_SRC_NOT_SUPPORTED).  doesn't support mp3s?
 - safari's AudioContext `.createMediaElementSource()` method not implemented -- so no progressive loading
 - safari freezes when returning from fullscreen
 - safari drag-n-drop issue
-- safari defer loading animation
+- safari defer spinning vinyl animation till mp3 finishes loading
 - safari play/pause
 
 help & inspiration
