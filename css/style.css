@@ -74,10 +74,45 @@ body {
 }
 
 
-.icon-expand, .icon-loop-off, .icon-volume-medium, .icon-question, .icon-github2, .icon-keyboard2 {
+.icon-expand, .icon-loop-off, .icon-volume-medium, .icon-question, .icon-github2, .icon-keyboard2, .icon-soundcloud, .icon-pause, .icon-play, .icon-backward2, .icon-forward2 {
   font-size: 25px;
   padding-top: 10px;
   margin-right: 4px;
+}
+
+.icon-pause {
+  position: fixed;
+  top: 110px;
+  right: 150px;
+  font-size: 40px;
+}
+
+.icon-play {
+  position: fixed;
+  top: 110px;
+  right: 150px;
+  font-size: 40px;
+}
+
+.icon-soundcloud {
+  position: fixed;
+  top: 93px;
+  right: 30px;
+  font-size: 70px;
+}
+
+.icon-forward2 {
+  position: fixed;
+  top: 117px;
+  right: 120px;
+  font-size: 25px;
+}
+
+.icon-backward2 {
+  position: fixed;
+  top: 117px;
+  right: 197px;
+  font-size: 25px;
 }
 
 .icon-expand, .icon-contract {
@@ -136,7 +171,19 @@ body {
   color: white;
   float: right;
 }
- 
+ .icon-soundcloud2 {
+  font-size: 128px;
+  color: white;
+}  
+
+#sc_icon {
+  float: right;
+  margin: 0;
+  font-size: 100px;
+  padding: 0;
+  top: 0;
+}
+
 .icon-vinyl, .icon-vinyl2, .icon-vinyl3 {
   position: absolute;
   display: inline-block;
@@ -166,6 +213,59 @@ body {
 
 }
 
+.song-metadata {
+  color: #fff;
+  position: fixed;
+  top: 71px;
+  right: 30px;
+  opacity: 0.8;
+  font-family: 'Helvetica Neue', Helvetica;
+  font-weight: 100;
+  font-size: 26px;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 0px black;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 40;
+  font-style: italic;
+  -webkit-transition: opacity .5s linear;
+     -moz-transition: opacity .5s linear;
+       -o-transition: opacity .5s linear;
+          transition: opacity .5s linear;
+}
+
+.song-metadata:hover {
+  text-decoration: underline;
+  opacity: 1;
+}
+
+.song-metadata a {
+  text-decoration: none;
+  color: white;
+}
+
+.show-meta {
+  opacity: 0.8;
+}
+
+#sc_input {
+  border-radius: 10px;
+  font-size: 25px;
+  color: #444;
+  padding: 6px;
+  width: 100%;
+  margin: 10px;
+}
+
+.dragover {
+  background-color: white;
+  opacity: 0.6;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 4001;
+  display: none;
+}
 
 /* hhttp://tympanus.net/codrops/2014/01/21/dot-navigation-styles/ */
 .dotstyle ul {
@@ -401,6 +501,15 @@ html.theme_1 .dotstyle li a, html.theme_3 .dotstyle li a {
     content: "";
     display: inline-block;
     width: 100%;    
+}
+
+.menu-controls {
+  text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+  -webkit-transition: all 300ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+     -moz-transition: all 300ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+       -o-transition: all 300ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+          transition: all 300ms cubic-bezier(0.770, 0.000, 0.175, 1.000); /* easeInOutQuart */
+
 }
 
 .menu-wide {
@@ -863,6 +972,14 @@ html.theme_5 .graticule {
 
 /* menu svg overrides */
 
+html.theme_1 .menu-controls, html.theme_3 .menu-controls, html.theme_4 .menu-controls, html.theme_5 .menu-controls {
+  text-shadow: 0 0 0 rgba(0,0,0,0);
+}
+html.theme_2 .menu-controls .i, html.theme_3 .menu-controls .i, html.theme_5 .menu-controls .i {
+  color: white;
+  text-shadow: 2px 2px 0 rgba(0,0,0,1);
+}
+
 html.theme_2 .menu svg * {
   stroke-width: 0;
   fill: #EBE3AA;
@@ -988,6 +1105,17 @@ html.theme_5 .menu .hexagon {
   }
 }
 
+@keyframes fadeIn {
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  100% {
+    opacity: 1;
+  }
+}
 
 /* BLINK KEYFRAME */
 /* http://mudbugmedia.com/blog/2012/10/03/css3-keyframe-animation/ */
@@ -1151,10 +1279,10 @@ input[type="range"]::-ms-thumb {
 
 .md-content h3 {
   margin: 0;
+  font-family: 'Helvetica Neue';
   padding: 0.4em;
-  text-align: center;
   font-size: 2.4em;
-  font-weight: 300;
+  font-weight: 100;
   opacity: 0.8;
   background: rgba(0,0,0,0.1);
   border-radius: 3px 3px 0 0;
@@ -1177,7 +1305,7 @@ input[type="range"]::-ms-thumb {
   /*font-size: 0.8em;*/
 }
 
-#modal-about a, #modal-about a:visited {
+#modal-about a, #modal-about a:visited, #modal-soundcloud a, #modal-soundcloud a:visited {
   color: white;
 }
 

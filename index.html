@@ -4,8 +4,10 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
 
-        <title>Party Mode - An audio visualizer experiment.</title>
-
+        <title>Party Mode :: An audio visualizer experiment.</title>
+        
+        <link rel="icon" href="favicon.ico" type="image/x-icon" />
+        
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="icomoon/style.css">
         <link rel="stylesheet" href="css/style.css">
@@ -19,6 +21,7 @@
         <script src="js/mousetrap.js"></script>
         <script src="js/id3-minimized.js"></script>
         <script src="js/main.js"></script>
+        <script src="//connect.soundcloud.com/sdk.js"></script>
 
         <script>
           (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -35,6 +38,7 @@
     </head>
 
     <body>
+        <div id="dragover" class="dragover"></div>
         <div id="tooltip" class="tooltip"></div>
         <div class="md-modal md-effect-1" id="modal-about">
             <div class="md-content">
@@ -89,6 +93,32 @@
                 </div>
             </div>
         </div>
+        <div class="md-modal md-effect-1" id="modal-soundcloud">
+            <div class="md-content">
+                <h3>Play Audio via SoundCloud*</h3>
+                <div style='line-height: 23px;'>
+                <span style='margin-top: -35px; display: block; font-family: helvetica neue;'>*Only works in Chrome at the moment</span>
+                <i id='sc_icon' class="icon-soundcloud"></i>
+                    <p>
+                        <br />
+
+                        Simply paste in a link to a <a href='http://soundcloud.com'>SoundCloud</a> artist, track, or playlist and click import:<br />
+
+                         <input id='sc_input' placeholder='ex. https://soundcloud.com/mydevices/launch'>
+                         <button class="sc_import">import audio</button>
+
+                        <br /><br />
+
+                        You can also share it with the following URL:
+
+                        <pre id='sc_url' style='word-wrap: break-word; text-align: center;'>http://preziotte.com/partymode?sc=<span>SOUNDCLOUD_URL</span></pre>
+
+                    </p>
+
+                    <button class="md-close">dismiss</button>
+                </div>
+            </div>
+        </div>
         <div class='menu'>
             <ul>
                 <li id='circle' viz-num='0' class='active'><div class='clicker'></div></li>
@@ -112,7 +142,14 @@
             </div>
 
             <div id='progressBar' class='progressBar'></div>
-            
+            <div class='song-metadata'></div>
+            <div class='menu-controls'>
+                <i class="i icon-backward2"></i> 
+                <i class="i icon-pause"></i> 
+                <i class="i icon-forward2"></i> 
+                <i class="i icon-soundcloud schover"></i> 
+            </div>
+
             <div class='menu-wide'>
 
                 <div class='options'>

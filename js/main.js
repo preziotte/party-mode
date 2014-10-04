@@ -3,7 +3,7 @@
 (function () {
 
 	var root = this;  									// use global context rather than window object
-	var waveform_array, old_waveform, objectUrl;		// raw waveform data from web audio api
+	var waveform_array, old_waveform, objectUrl, metaHide;		// raw waveform data from web audio api
 	var WAVE_DATA = []; 								// normalized waveform data used in visualizations
 
 	// main app/init stuff //////////////////////////////////////////////////////////////////////////
@@ -13,26 +13,42 @@
 
 		// globals & state
 		var s = {
+			version: '1.1.0',
+			debug: (window.location.href.indexOf("debug") > -1) ? true : false,
 			playlist: ['forgot.mp3', 'stop.mp3', 'bless.mp3', 'benares.mp3', 'radio.mp3', 'selftanner.mp3', 'startshootin.mp3', 'track1.mp3', 'holdin.m4a', 'waiting.mp3', 'dawn.mp3', 'analog.mp3', 'settle.mp3', 'crackers.mp3', 'nuclear.mp3', 'madness.mp3', 'magoo.mp3', 'around.mp3', 'where.mp3', 'bird.mp3', 'notes.mp3'],
+			playListLinks: [],
+			//playlist: ['1.mp3', '2.mp3'],
 			width : $(document).width(),
 			height : $(document).height(),
+			sliderVal: 50,												// depricated -- value of html5 slider
+			canKick: true,												// rate limits auto kick detector
+			metaLock: false,											// overrides .hideHUD() when song metadata needs to be shown
+
 			vendors : ['-webkit-', '-moz-', '-o-', ''],
+
 			drawInterval: 1000/24,										// 1000ms divided by max framerate
 			then: Date.now(),											// last time a frame was drawn
 			trigger: 'circle',											// default visualization
+
+			hud: 1,
 			active: null,												// active visualization
 			vizNum: 0,													// active visualization (index number)
 			thumbs_init: [0,0,0,0,0,0,0,0],								// are thumbnails initialized?
 			theme: 0, 													// default color palette
+			currentSong : 0,											// 
+
+			soundCloudURL: null,
+			soundCloudData: null,
+			soundCloudTracks: null,
+
 			loop: 1,													// current loop index
 			loopDelay: [null,20000,5000,1000],							// array of loop options
 			loopText: ['off', 'every 20s', 'every 5s', 'every 1s'],
-			changeInterval: null,										// initialize looping setInterval id
-			sliderVal: 50,												// value of html5 slider
-			canKick: true,												// rate limits auto kick detector
-			debug: (window.location.href.indexOf("debug") > -1) ? true : false
+			changeInterval: null										// initialize looping setInterval id
+
 		};
 		root.State = s;
+
 
 		root.context = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -44,10 +60,15 @@
 		a.bind();			// attach all the handlers
 		a.keyboard();		// bind all the shortcuts
 
-		if (window.location.protocol.search('chrome-extension') >= 0)
-			a.findAudio();		// find audio
+		if (window.location.protocol.search('chrome-extension') >= 0) {
+			a.findAudio();
+			return;
+		}
+		
+		if (h.getURLParameter('sc') == null)
+			a.loadSound();		
 		else
-			a.loadSound();		// load audio
+			a.soundCloud();
 
 
 		};
@@ -60,8 +81,15 @@
 		$('.menu').on(click, 'li', function() { h.vizChange(+$(this).attr('viz-num')); });
 		$('.menu').on(click, '.clicker', function() { h.vizChange(+$(this).closest('li').attr('viz-num')); });
 		$('.buffer').on(click, function() { window.location.href='http://preziotte.com' });
+		$('.song-metadata').on(click, h.songGo);
 		$('.wrapper').on(click, function() { h.toggleMenu('close'); });
+		$('.icon-pause').on(click, h.togglePlay);
+		$('.icon-play').on(click, h.togglePlay);
+		$('.icon-forward2').on(click, function() { h.changeSong('n'); });
+		$('.icon-backward2').on(click, function() { h.changeSong('p'); });
 		$('.icon-expand').on(click, h.toggleFullScreen);
+		$('.icon-soundcloud').on(click, function() { h.showModal('#modal-soundcloud'); });
+		$('.sc_import').on(click, a.soundCloud);
 		$('.icon-question').on(click, function() { h.showModal('#modal-about'); });
 		$('.icon-keyboard2').on(click, function() { h.showModal('#modal-keyboard'); });
 		$('.icon-volume-medium').on(click, function() { audio.muted = (audio.muted == true) ? false : true; });
@@ -95,11 +123,8 @@
 		hide = setTimeout(function() { h.hideHUD(); }, 2000);
 
 		// update state on window resize
-		window.onresize = function(event) {
-			h.resize();
-		};
-		//http://stackoverflow.com/a/9775411
-		$(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange',h.resize);
+		window.onresize = function(event) { h.resize(); };
+		$(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', h.resize);  //http://stackoverflow.com/a/9775411
 
 
 		};
@@ -107,12 +132,15 @@
 		console.log("a.keyboard fired");
 
 		Mousetrap.bind('esc', h.hideModals);
-		Mousetrap.bind('space', function() { (audio && audio.paused == false) ? audio.pause() : audio.play(); });
+		Mousetrap.bind('space', h.togglePlay);
 		Mousetrap.bind('f', h.toggleFullScreen); 
 		Mousetrap.bind('m', function() { h.toggleMenu('toggle') }); 
-		Mousetrap.bind('c', function() { if (audio) audio.src = 'mp3/'+State.playlist[Math.floor(Math.random() * State.playlist.length)] });
+		Mousetrap.bind('c', function() { h.changeSong(); });
 		Mousetrap.bind('l', function() { $('.icon-loop-on').trigger('click'); });
 		Mousetrap.bind('k', function() { $('.icon-keyboard2').trigger('click'); });
+		Mousetrap.bind('s', function() { h.showModal('#modal-soundcloud'); });
+		Mousetrap.bind('v', function() { h.changeSong('n'); });
+		Mousetrap.bind('x', function() { h.changeSong('p'); });
 
 		Mousetrap.bind('1', function() { State.trigger = 'circle'; });
 		Mousetrap.bind('2', function() { State.trigger = 'chop'; });
@@ -129,45 +157,174 @@
 		Mousetrap.bind('right', function() { h.themeChange(State.theme+1); });
 
 		};
+
 	a.loadSound = function() {
 		console.log("a.loadSound fired");
 
 		if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0) {
 			console.log(" -- sound loaded via ajax request");
-			audio = null;
-		    var request = new XMLHttpRequest();
-		    request.open("GET", "mp3/"+State.playlist[0], true);
-		    request.responseType = "arraybuffer";
-		 
-		    request.onload = function(event) {
-		        var data = event.target.response;
-		 
-		        a.audioBullshit(data);
-		    };
-		 
-		    request.send();
+			$('.menu-controls').hide();
+			a.loadSoundAJAX();
 		}
 		else {
 			console.log(" -- sound loaded via html5 audio");
-			a.bindFileToAudio('mp3/'+State.playlist[0]);
+			var path = 'mp3/'+State.playlist[0];
+			a.loadSoundHTML5(path);
+	    	h.readID3(path);
 		}
 
 		};
-	a.bindFileToAudio = function(f) {
-		console.log('h.bindFileToAudio fired');
+	a.loadSoundAJAX = function() {
+		console.log('a.loadSoundAJAX fired');
+
+		audio = null;
+	    var request = new XMLHttpRequest();
+	    request.open("GET", "mp3/"+State.playlist[0], true);
+	    request.responseType = "arraybuffer";
+	 
+	    request.onload = function(event) {
+	        var data = event.target.response;
+	 
+	        a.audioBullshit(data);
+	    };
+	 
+	    request.send();
+
+		};
+	a.loadSoundHTML5 = function(f) {
+		console.log('a.loadSoundHTML5 fired');
 
 		audio = new Audio();
 		//audio.remove();
 		audio.src = f; 
-	    audio.controls = true;
-	    audio.loop = true;
+	    //audio.controls = true;
+	    //audio.loop = true;
 	    audio.autoplay = true;
-
+ 		audio.addEventListener('ended', function() { h.songEnded(); }, false);
+		
 		$('#audio_box').empty();
 		document.getElementById('audio_box').appendChild(audio);
         a.audioBullshit();
 
 		};
+
+	a.soundCloud = function() {
+		console.log('a.soundCloud fired');		
+
+		// if mozilla or safar, just loadsound instead
+		if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0) {
+			a.loadSound();	
+			return;	
+		}
+		if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+			a.loadSound();	
+			return;	
+		}
+		
+		State.soundCloudURL = $('#sc_input').val() || h.getURLParameter('sc');
+		$('#sc_input').val(State.soundCloudURL);
+		$('#sc_url span').html(State.soundCloudURL);
+
+		if (State.soundCloudURL == null) return;
+
+		State.currentSong = 0
+
+		// use /resolve to get tracks/playlists/whatever from url
+		$.get(
+		  'http://api.soundcloud.com/resolve.json?url=' + State.soundCloudURL + '&client_id=67129366c767d009ecc75cec10fa3d0f', 
+		  function (result) {
+		  	State.soundCloudData = result;
+		    console.log(result);
+		    console.log(result.kind);
+
+	    	if (result.kind == "user") {
+			    console.log(result.id);
+
+				// https://stackoverflow.com/questions/10159802/getting-specific-users-track-list-with-soundcloud-api
+				// get all tracks from user via /users/{user_id}/tracks
+				SC.initialize({
+					client_id: '67129366c767d009ecc75cec10fa3d0f'
+				});
+
+				SC.get("/users/"+result.id+"/tracks", function(sound) {
+					State.soundCloudTracks = sound.length;
+					State.soundCloudData = sound;
+					sound = sound[0];
+					console.log(sound);
+					console.log(sound.title)
+					console.log(sound.user.permalink)
+	    			//sound.uri = sound.uri.replace(/.*?:\/\//g, "http://www.corsproxy.com/");
+
+					h.renderSongTitle(sound);
+					a.loadSoundHTML5(sound.uri+'/stream?client_id=67129366c767d009ecc75cec10fa3d0f');
+
+		});
+
+	    	}
+
+	    	if (result.kind == "track") {
+				State.soundCloudTracks = 1;
+				State.soundCloudData = result;
+	    		console.log(result.uri);
+	    		console.log(result.title);
+	    		console.log(result.user.username);
+
+	    		// http://www.corsproxy.com/
+	    		//result.uri = result.uri.replace(/.*?:\/\//g, "http://www.corsproxy.com/");
+				a.loadSoundHTML5(result.uri+'/stream?client_id=67129366c767d009ecc75cec10fa3d0f');
+				h.renderSongTitle(result);
+
+	    	}
+
+	    	if (result.kind == "playlist") {
+				State.soundCloudTracks = result.tracks.length;
+				State.soundCloudData = result.tracks;
+	    		console.log(result.tracks.length);
+	    		console.log(result.title);
+	    		console.log(result.user.username);
+				h.renderSongTitle(result.tracks[0]);
+				a.loadSoundHTML5(result.tracks[0].uri+'/stream?client_id=67129366c767d009ecc75cec10fa3d0f');
+
+	    	}
+		  }
+		);
+		return;
+
+		// to get tracks /users/{user_id}/tracks
+
+		SC.initialize({
+			client_id: '67129366c767d009ecc75cec10fa3d0f'
+		});
+
+		SC.get("/tracks/115225139", function(sound) {
+			console.log(sound);
+			console.log(sound.title)
+			$('.song-metadata').html(sound.title);
+			$('.song-metadata').addClass("show-meta");
+
+			State.metaLock = true;
+
+		// in 3 seconds, remove class unless lock
+		metaHide = setTimeout(function() { 
+			State.metaLock = false;
+			$('.song-metadata').removeClass("show-meta");
+
+		}, 3000); 	
+		a.loadSoundHTML5(sound.uri+'/stream?client_id=67129366c767d009ecc75cec10fa3d0f');
+
+		});
+				//	 SC.get("/tracks/75868018", {}, function(sound){
+				//	 	console.log(sound);
+				//	     console.log("Sound URI: "+sound.uri+'/stream?client_id=67129366c767d009ecc75cec10fa3d0f');			// append to sound.uri --> /stream?client_id=YOUR_ID
+					     //$("#audio-test").attr("src", sound.uri);
+				//		     a.loadSoundHTML5(sound.uri+'/stream?client_id=67129366c767d009ecc75cec10fa3d0f');
+				//		 });
+
+					 //  SC.stream("/tracks/75868018", function(sound){
+					 //     $("audio-test").attr("src", sound.uri);
+					 // });
+		};
+
 	a.audioBullshit = function (data) {
 		// uses web audio api to expose waveform data
 		console.log("a.audioBullshit fired");
@@ -184,6 +341,8 @@
 	    else {
 	    	// https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createScriptProcessor
 	 		root.source = context.createMediaElementSource(audio);  // doesn't seem to be implemented in safari :(
+	 		//root.source = context.createScriptProcessor(4096, 1, 1);  
+
 	    }
 
 		source.connect(analyser);
@@ -196,7 +355,7 @@
 		console.log("a.findAudio fired");
 
 		$('video, audio').each(function() {
-			//h.bindFileToAudio(this.src);
+			//h.loadSoundHTML5(this.src);
 			// if .src?  if playing?
 			audio = this;
 			a.audioBullshit();
@@ -1197,16 +1356,20 @@
 		}
 	h.hideHUD = function() {
 		//$('.icon-knobs').is(':hover') || 
-		if ($('#mp3_player').is(':hover') || $('.dotstyle').is(':hover') || $('.slider').is(':hover') || $('.icon-expand').is(':hover') || $('.icon-github2').is(':hover') || $('.icon-loop-on').is(':hover') || $('.icon-question').is(':hover') || $('.icon-keyboard2').is(':hover'))
+		if ($('#mp3_player').is(':hover') || $('.dotstyle').is(':hover') || $('.slider').is(':hover') || $('.icon-expand').is(':hover') || $('.icon-github2').is(':hover') || $('.icon-loop-on').is(':hover') || $('.icon-question').is(':hover') || $('.icon-keyboard2').is(':hover') || $('.song-metadata').is(':hover') || $('.icon-forward2').is(':hover') || $('.icon-backward2').is(':hover') || $('.icon-pause').is(':hover') || $('.schover').is(':hover'))
 			return;
 
 		$('#mp3_player').addClass('fadeOut');
 		$('.icon-menu').addClass('fadeOut');
 		$('.menu-wide').addClass('fadeOut');
 		$('.menu').addClass('fadeOut');
+		$('.menu-controls').addClass('fadeOut');
 		$('#progressBar').addClass('fadeOut');
 		$('html').addClass('noCursor');
+		if (State.metaLock == false)
+			$('.song-metadata').removeClass("show-meta");
 
+		State.hud = 0;
 		}
 	h.showHUD = function() {
 
@@ -1214,8 +1377,12 @@
 		$('.icon-menu').removeClass('fadeOut');
 		$('.menu-wide').removeClass('fadeOut');
 		$('.menu').removeClass('fadeOut');
+		$('.menu-controls').removeClass('fadeOut');
 		$('#progressBar').removeClass('fadeOut');
 		$('html').removeClass('noCursor');
+		$('.song-metadata').addClass("show-meta");
+
+		State.hud = 1;
 
 		}
 	h.showModal = function(id) {
@@ -1254,7 +1421,7 @@
 		console.log('h.handleDrop fired');
 
 		h.stop(e);
-
+		h.removeSoundCloud();
 		//if (window.File && window.FileReader && window.FileList && window.Blob) {
 
     	URL.revokeObjectURL(objectUrl);		
@@ -1268,7 +1435,7 @@
     	h.readID3(file);
 
     	var objectUrl = URL.createObjectURL(file);
-    	a.bindFileToAudio(objectUrl);
+    	a.loadSoundHTML5(objectUrl);
 
 			   //  	var files = e.originalEvent.dataTransfer.files;
 
@@ -1301,31 +1468,163 @@
 		
 		};
 	h.readID3 = function(file) {
+		console.log('h.readID3 fired');
 
-		ID3.loadTags(file.urn ||file.name, function() {
-		    var tags = ID3.getAllTags(file.urn ||file.name);
-		    console.log(tags);
-		    console.log(tags.artist);
-		    console.log(tags.album);
-		    console.log(tags.title);
-		    if( "picture" in tags ) {
-		    	var image = tags.picture;
-		    	var base64String = "";
-		    	for (var i = 0; i < image.data.length; i++) {
-		    		base64String += String.fromCharCode(image.data[i]);
-		    	}
-		    	console.log("data:" + image.format + ";base64," + window.btoa(base64String));
-		    	//$("art").src = "data:" + image.format + ";base64," + window.btoa(base64String);
-		    	//$("art").style.display = "block";
-		    } 
-		    else {
-		    	console.log("nope.");
-		    	//$("art").style.display = "none";
-		    }
-		}, {
-		    dataReader: FileAPIReader(file)
-		});
+		$('.song-metadata').html("");
 
+		if (typeof file == 'string') {
+
+			ID3.loadTags(audio.src, function() {
+			    var tags = ID3.getAllTags(audio.src);
+				h.renderSongTitle(tags);
+			});
+
+		}
+
+		else {
+
+			ID3.loadTags(file.urn || file.name, function() {
+			    var tags = ID3.getAllTags(file.urn || file.name);
+			    tags.dragged = true;
+				h.renderSongTitle(tags);
+
+			    if( "picture" in tags ) {
+			    	var image = tags.picture;
+			    	var base64String = "";
+			    	for (var i = 0; i < image.data.length; i++) {
+			    		base64String += String.fromCharCode(image.data[i]);
+			    	}
+			    	//console.log("data:" + image.format + ";base64," + window.btoa(base64String));
+			    	//$("art").src = "data:" + image.format + ";base64," + window.btoa(base64String);
+			    	//$("art").style.display = "block";
+			    } 
+			    else {
+			    	//console.log("nope.");
+			    	//$("art").style.display = "none";
+			    }
+			}, {
+			    dataReader: FileAPIReader(file)
+			});
+		}
+
+		};
+
+	h.removeSoundCloud = function() {
+		State.soundCloudURL = null;
+		State.soundCloudData = null;
+		State.soundCloudTracks = null;
+
+		$('.song-metadata').html("");
+		$('.song-metadata').attr('data-go', "");
+
+		$('#sc_input').val("");
+		$('#sc_url span').html('SOUNDCLOUD_URL');
+
+		// load local songs?
+
+		};
+
+	h.togglePlay = function() {
+		(audio && audio.paused == false) ? audio.pause() : audio.play();
+		$('.icon-pause').toggleClass('icon-play');
+		};
+	h.songEnded = function() {
+		console.log('h.songEnded fired');		
+
+		h.changeSong('n');
+
+		};
+	h.changeSong = function(direction) {
+		console.log('h.changeSong fired');		
+
+		var totalTracks = State.soundCloudTracks || State.playlist.length;
+
+		if (State.soundCloudData && State.soundCloudTracks <= 1) {
+			audio.currentTime = 0;
+			$('.icon-pause').removeClass('icon-play');
+			return;
+		}
+
+		if (direction == 'n')
+			State.currentSong = State.currentSong + 1;
+
+		else if (direction == 'p') {
+			if (audio.currentTime < 3) {
+				State.currentSong = (State.currentSong <= 0) ? State.currentSong+totalTracks-1 : State.currentSong - 1;
+			}
+			else {
+				audio.currentTime = 0;
+				$('.icon-pause').removeClass('icon-play');
+				return;
+			}
+		}
+		else {
+			State.currentSong = Math.floor(Math.random() * totalTracks);
+		}
+
+		if (State.soundCloudData) {
+			var trackNum = Math.abs(State.currentSong)%State.soundCloudTracks;
+			h.renderSongTitle(State.soundCloudData[trackNum]);
+			a.loadSoundHTML5(State.soundCloudData[trackNum].uri+'/stream?client_id=67129366c767d009ecc75cec10fa3d0f');
+		}
+		else {
+			if (audio) {
+				audio.src = 'mp3/'+State.playlist[Math.abs(State.currentSong)%State.playlist.length];
+				h.readID3(audio.src);
+			}
+		}
+
+		$('.icon-pause').removeClass('icon-play');
+
+		};
+	h.renderSongTitle = function(obj) {
+		console.log('h.renderSongTitle fired');		
+
+		if (State.soundCloudData) {
+			var trackNum = Math.abs(State.currentSong)%State.soundCloudTracks;
+			var regs = new RegExp(obj.user.username, 'gi');
+			var prettyTitle = obj.title;
+
+			if (prettyTitle.search(regs) == -1)
+				prettyTitle += ' <b>' + obj.user.username + '</b>'; 
+
+			//var prettyTitle = obj.title.replace(regs, "<b>"+obj.user.username+"</b>");
+			
+			if (State.soundCloudTracks > 1)
+				prettyTitle += ' ['+(trackNum+1)+'/'+State.soundCloudTracks+']';
+
+			$('.song-metadata').html(prettyTitle);
+			$('.song-metadata').attr('data-go', obj.permalink_url);
+		}
+		else {
+			// id3?
+		    var prettyTitle = '"'+obj.title+'" by <b>'+obj.artist+'</b>'; //  on <i>'+tags.album+'</i>
+			var trackNum = Math.abs(State.currentSong)%State.playlist.length;
+
+			if (State.playlist.length > 1 && !obj.dragged)
+				prettyTitle += ' ['+(trackNum+1)+'/'+State.playlist.length+']';
+
+			$('.song-metadata').html(prettyTitle);
+		}
+
+			$('.song-metadata').addClass("show-meta");
+
+			State.metaLock = true;
+			clearTimeout(metaHide);
+			// in 3 seconds, remove class unless lock
+			metaHide = setTimeout(function() { 
+				State.metaLock = false;
+				if (State.hud == 0)
+					$('.song-metadata').removeClass("show-meta");
+			}, 3000);
+
+		};
+	h.songGo = function() {
+		if (!$(this).attr('data-go'))
+			return false;
+		audio.pause();
+		$('.icon-pause').removeClass('icon-play');
+		window.open($(this).attr('data-go'),'_blank');
 		};
 
 	h.themeChange = function(n) {
@@ -1385,6 +1684,17 @@
         return d3.scale.linear().domain([0, 360]).range([0, 2 * Math.PI])(this);
     	};
 
+    h.getURLParameter = function(sParam) {
+    	//http://www.jquerybyexample.net/2012/06/get-url-parameters-using-jquery.html
+	    var sPageURL = window.location.search.substring(1);
+	    var sURLVariables = sPageURL.split('&');
+	    for (var i = 0; i < sURLVariables.length; i++) {
+	        var sParameterName = sURLVariables[i].split('=');
+	        if (sParameterName[0] == sParam) {
+	            return sParameterName[1];
+	        }
+	    }
+		};
 	h.isMobile = function() {
 		// returns true if user agent is a mobile device
 		return (/iPhone|iPod|iPad|Android|BlackBerry/).test(navigator.userAgent);
@@ -1447,3 +1757,4 @@
 }).call(this);
 
 $(document).ready(App.init);
+

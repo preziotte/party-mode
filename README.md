@@ -7,7 +7,7 @@ An audio visualizer experiment for the browser.  Powered by [d3.js](https://gith
 ###*** *If anything deserves an epilepsy warning, it'd be this.* ***
 
 somewhat-technical overview
-=========================
+===========================
 Using the web audio api, I can get an array of numbers which corresponds to the waveform of the sound an html5 audio element is producing.  There's a [good tutorial](http://www.developphp.com/view.php?tid=1348) on how to do this.  Then, using `requestAnimationFrame` (with a little [frame limiting](http://codetheory.in/controlling-the-frame-rate-with-requestanimationframe/) for performance reasons) I'm updating that array as the music changes.  I then normalize the data a bit (or transform it slightly depending on the visualization) and redraw the screen based on the updated array.  I'm using [d3.js](https://github.com/mbostock/d3) to draw and redraw SVG based on this normalized data.  Each visualization uses the data a bit differently -- it was mostly trial and error to get some stuff I liked looking at.  
 
 Since I'm using D3 -- which is just drawing SVG -- I was able to style everything in CSS (no images are used at all, including icons).  There are a handful of differently colored themes for each visualization, and I do some rudimentary CSS namespacing by updating a class applied to the `html` element.  eg. `<html class='theme_1'>`. This lets me override or substitute CSS rules pretty trivially.  I can add some additional variation to each theme by messing with pseudo selectors.  For example, I can use `:nth-of-type` to hide every nth SVG rectangle or making every odd child have a different `stroke-dasharray`, etc.
@@ -17,13 +17,6 @@ Mousetrap.js handles my keyboard shortcuts brilliantly, and jQuery made life eas
 I developed this primarily in Chrome.  Other modern browsers still have some interesting issues (see known issues).  I've found that WebKit seems to have the [most competent](https://www.mapbox.com/osmdev/2012/11/20/getting-serious-about-svg/) implementation of SVG.  And specifically Chrome seems to play the nicest with the html5 audio element.  For my purposes at least.  Running this can easily strain my four year old MacBook's CPU, but I think I'm pushing several things beyond what they were intended for with this thing.  Not complaining.
 
 Markup lies in `index.html`, javascript is in `js/main.js` and style in `css/style.css`.  I can go into more detail if there's demand for it.
-
-todo
-====
-- read id3 tags of audio files & show a little widget when a new song starts
-- play/pause ui signifier
-- debug on ipad
-- grunt uglify & concat css+js
 
 ideas
 =====
@@ -68,7 +61,13 @@ help & inspiration
 <a target='_blank' href='http://thenounproject.com'>The Noun Project</a> 
 - <a target="_blank" href='https://stackoverflow.com/questions/13368046/how-to-normalize-a-list-of-positive-numbers-in-javascript'>Stack Overflow</a>
 - <a target='_blank' href='http://craig.is/killing/mice'>Mousetrap.js</a> and <a target='_blank' href='https://jquery.com/'>jQuery</a>
+- <a target='_blank' href='https://github.com/aadsm/JavaScript-ID3-Reader'>aadsm/JavaScript-ID3-Reader</a>
 - <a target='_blank' href='http://icomoon.io/app/'>icomoon</a> (iconmelon, fontello, and iconmonstr are all pretty rad).
+
+examples
+--------
+- http://preziotte.com/partymode
+- http://preziotte.com/odesza (Featured on Odesza's official [Youtube](http://www.youtube.com/watch?v=Km-0kHxa7jg) channel)
 
 cool gifs
 ==========

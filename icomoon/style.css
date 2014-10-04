@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'icomoon';
-	src:url('fonts/icomoon.eot?-du5p7y');
-	src:url('fonts/icomoon.eot?#iefix-du5p7y') format('embedded-opentype'),
-		url('fonts/icomoon.woff?-du5p7y') format('woff'),
-		url('fonts/icomoon.ttf?-du5p7y') format('truetype'),
-		url('fonts/icomoon.svg?-du5p7y#icomoon') format('svg');
+	src:url('fonts/icomoon.eot?24z693');
+	src:url('fonts/icomoon.eot?#iefix24z693') format('embedded-opentype'),
+		url('fonts/icomoon.woff?24z693') format('woff'),
+		url('fonts/icomoon.ttf?24z693') format('truetype'),
+		url('fonts/icomoon.svg?24z693#icomoon') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -23,6 +23,48 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.icon-uniE602:before {
+	content: "\e602";
+}
+.icon-coin:before {
+	content: "\e616";
+}
+.icon-download:before {
+	content: "\e617";
+}
+.icon-info:before {
+	content: "\e619";
+}
+.icon-backward:before {
+	content: "\e61a";
+}
+.icon-forward:before {
+	content: "\e61b";
+}
+.icon-backward2:before {
+	content: "\e61c";
+}
+.icon-forward2:before {
+	content: "\e61d";
+}
+.icon-shuffle:before {
+	content: "\e61f";
+}
+.icon-soundcloud:before {
+	content: "\e620";
+}
+.icon-soundcloud2:before {
+	content: "\e699";
+}
+.icon-expand:before {
+	content: "\e613";
+}
+.icon-contract:before {
+	content: "\e614";
+}
+.icon-happy:before {
+	content: "\e615";
+}
 .icon-question:before {
 	content: "\e600";
 }
@@ -30,31 +72,31 @@
 	content: "\e601";
 }
 .icon-loop-off:before {
-	content: "\e602";
-}
-.icon-loop-on:before {
 	content: "\e603";
 }
-.icon-knobs:before {
+.icon-loop-on:before {
 	content: "\e604";
+}
+.icon-knobs:before {
+	content: "\e605";
 }
 .icon-keyboard:before {
 	content: "\e802";
 }
 .icon-volume-medium:before {
-	content: "\e605";
-}
-.icon-volume-mute2:before {
 	content: "\e606";
 }
-.icon-pause:before {
+.icon-volume-mute2:before {
 	content: "\e607";
 }
-.icon-play:before {
+.icon-pause:before {
 	content: "\e608";
 }
-.icon-menu:before {
+.icon-play:before {
 	content: "\e609";
+}
+.icon-menu:before {
+	content: "\e618";
 }
 .icon-keyboard2:before {
 	content: "\e60a";
@@ -82,13 +124,4 @@
 }
 .icon-eye-wide:before {
 	content: "\e612";
-}
-.icon-expand:before {
-	content: "\e613";
-}
-.icon-contract:before {
-	content: "\e614";
-}
-.icon-happy:before {
-	content: "\e615";
 }
