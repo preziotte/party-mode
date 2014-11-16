@@ -6,7 +6,7 @@ An audio visualizer experiment for the browser.  Powered by [d3.js](https://gith
 
 ###*** *If anything deserves an epilepsy warning, it'd be this.* ***
 
-somewhat-technical overview
+a somewhat-technical overview
 ===========================
 Using the web audio api, I can get an array of numbers which corresponds to the waveform of the sound an html5 audio element is producing.  There's a [good tutorial](http://www.developphp.com/view.php?tid=1348) on how to do this.  Then, using `requestAnimationFrame` (with a little [frame limiting](http://codetheory.in/controlling-the-frame-rate-with-requestanimationframe/) for performance reasons) I'm updating that array as the music changes.  I then normalize the data a bit (or transform it slightly depending on the visualization) and redraw the screen based on the updated array.  I'm using [d3.js](https://github.com/mbostock/d3) to draw and redraw SVG based on this normalized data.  Each visualization uses the data a bit differently -- it was mostly trial and error to get some stuff I liked looking at.  
 
@@ -29,6 +29,7 @@ ideas
 known issues
 ============
 - doesn't play when running locally in firefox
+- soundcloud integration only working in chrome due to MediaElementSource only supporting same-origin sources in other browsers ([link](http://stackoverflow.com/a/23202652))
 - firefox `transform-origin: center` not implemented ([mozilla bug](https://bugzilla.mozilla.org/show_bug.cgi?id=923193))
 - opera `document.querySelector('audio').error` returns 4 (MEDIA_ERR_SRC_NOT_SUPPORTED).  doesn't support mp3s?
 - safari's AudioContext `.createMediaElementSource()` method not implemented -- so no progressive loading
@@ -62,7 +63,8 @@ help & inspiration
 - <a target="_blank" href='https://stackoverflow.com/questions/13368046/how-to-normalize-a-list-of-positive-numbers-in-javascript'>Stack Overflow</a>
 - <a target='_blank' href='http://craig.is/killing/mice'>Mousetrap.js</a> and <a target='_blank' href='https://jquery.com/'>jQuery</a>
 - <a target='_blank' href='https://github.com/aadsm/JavaScript-ID3-Reader'>aadsm/JavaScript-ID3-Reader</a>
-- <a target='_blank' href='http://icomoon.io/app/'>icomoon</a> (iconmelon, fontello, and iconmonstr are all pretty rad).
+- <a target='_blank' href='http://www.html5rocks.com/en/tutorials/getusermedia/intro/'>Eric Bidelman</a> via HTML5 Rocks
+- <a target='_blank' href='http://icomoon.io/app/'>icomoon</a> (iconmelon, fontello, and iconmonstr are all pretty rad)
 
 examples
 --------

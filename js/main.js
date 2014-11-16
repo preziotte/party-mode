@@ -2,9 +2,9 @@
 
 (function () {
 
-	var root = this;  									// use global context rather than window object
-	var waveform_array, old_waveform, objectUrl, metaHide;		// raw waveform data from web audio api
-	var WAVE_DATA = []; 								// normalized waveform data used in visualizations
+	var root = this;  														// use global context rather than window object
+	var waveform_array, old_waveform, objectUrl, metaHide, micStream;		// raw waveform data from web audio api
+	var WAVE_DATA = []; 													// normalized waveform data used in visualizations
 
 	// main app/init stuff //////////////////////////////////////////////////////////////////////////
 	var a = {};	
@@ -13,11 +13,14 @@
 
 		// globals & state
 		var s = {
-			version: '1.1.0',
+			version: '1.6.0',
 			debug: (window.location.href.indexOf("debug") > -1) ? true : false,
-			playlist: ['forgot.mp3', 'stop.mp3', 'bless.mp3', 'benares.mp3', 'radio.mp3', 'selftanner.mp3', 'startshootin.mp3', 'track1.mp3', 'holdin.m4a', 'waiting.mp3', 'dawn.mp3', 'analog.mp3', 'settle.mp3', 'crackers.mp3', 'nuclear.mp3', 'madness.mp3', 'magoo.mp3', 'around.mp3', 'where.mp3', 'bird.mp3', 'notes.mp3'],
-			playListLinks: [],
-			//playlist: ['1.mp3', '2.mp3'],
+			// preziotte.com/partymode playlist
+			//playlist: ['forgot.mp3', 'chaos.mp3', 'stop.mp3', 'bless.mp3', 'benares.mp3', 'radio.mp3', 'selftanner.mp3', 'startshootin.mp3', 'track1.mp3', 'holdin.m4a', 'waiting.mp3', 'dawn.mp3', 'analog.mp3', 'settle.mp3', 'crackers.mp3', 'nuclear.mp3', 'madness.mp3', 'magoo.mp3', 'around.mp3', 'where.mp3', 'bird.mp3', 'notes.mp3'],
+			//playListLinks: ['https://soundcloud.com/mononome', 'https://soundcloud.com/sixfingerz/sixfingerz-out-of-chaos-sttb', 'http://odesza.com/', 'https://soundcloud.com/keithkenniff', 'http://www.holbaumann.com/', 'http://www.holbaumann.com/', 'http://www.blackmothsuperrainbow.com/', 'http://www.littlepeoplemusic.com/', 'https://en.wikipedia.org/wiki/The_1UP_Show', 'https://soundcloud.com/hermitude/holdin-on-hermitude-remix', 'https://soundcloud.com/ceiling_fan', 'http://www.iamsirch.com/', 'http://prettylightsmusic.com/', 'https://soundcloud.com/saycet'],
+			// example playlist
+			playlist: ['dawn.mp3', 'forgot.mp3'],
+			playListLinks: ['http://www.iamsirch.com/', 'https://soundcloud.com/mononome'],
 			width : $(document).width(),
 			height : $(document).height(),
 			sliderVal: 50,												// depricated -- value of html5 slider
@@ -30,12 +33,12 @@
 			then: Date.now(),											// last time a frame was drawn
 			trigger: 'circle',											// default visualization
 
-			hud: 1,
-			active: null,												// active visualization
+			hud: 1,														// is hud visible?
+			active: null,												// active visualization (string)
 			vizNum: 0,													// active visualization (index number)
 			thumbs_init: [0,0,0,0,0,0,0,0],								// are thumbnails initialized?
 			theme: 0, 													// default color palette
-			currentSong : 0,											// 
+			currentSong : 0,											// current track
 
 			soundCloudURL: null,
 			soundCloudData: null,
@@ -89,6 +92,7 @@
 		$('.icon-backward2').on(click, function() { h.changeSong('p'); });
 		$('.icon-expand').on(click, h.toggleFullScreen);
 		$('.icon-soundcloud').on(click, function() { h.showModal('#modal-soundcloud'); });
+		$('.icon-microphone').on(click, a.microphone);
 		$('.sc_import').on(click, a.soundCloud);
 		$('.icon-question').on(click, function() { h.showModal('#modal-about'); });
 		$('.icon-keyboard2').on(click, function() { h.showModal('#modal-keyboard'); });
@@ -102,6 +106,8 @@
 		$('.dotstyle').on(click, 'li', function() { h.themeChange($(this).find('a').text()); });
 		$('#slider').on('input change', function() { analyser.smoothingTimeConstant = 1-(this.value/100); }); 
 		$('#slider').on('change', function() { $('#slider').blur(); }); 
+		$('.i').on('mouseenter', h.tooltipReplace);
+		$('.i').on('mouseleave', h.tooltipUnReplace);
 
 		$(document).on('dragenter', h.stop );
 		$(document).on('dragover', h.stop);
@@ -220,7 +226,7 @@
 			a.loadSound();	
 			return;	
 		}
-		
+
 		State.soundCloudURL = $('#sc_input').val() || h.getURLParameter('sc');
 		$('#sc_input').val(State.soundCloudURL);
 		$('#sc_url span').html(State.soundCloudURL);
@@ -324,6 +330,36 @@
 					 //     $("audio-test").attr("src", sound.uri);
 					 // });
 		};
+	a.microphone = function() {
+		console.log('a.microphone fired');
+
+		navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+
+		if (micStream == null) {
+			if (navigator.getUserMedia) {
+				navigator.getUserMedia({audio: true, video: false}, function(stream) {
+					console.log(" --> audio being captured");
+					micStream = stream;
+					console.log(micStream);
+					var src = window.URL.createObjectURL(micStream);
+		 			root.source = context.createMediaStreamSource(micStream)
+					source.connect(analyser);
+					analyser.connect(context.destination);	
+					audio.pause();
+					//audio.src = null;
+				}, h.microphoneError);
+			} else {
+			  // fallback.
+			}
+		}
+		else {
+			console.log(" --> turning off")
+			micStream.stop();
+			micStream = null;
+			audio.play();
+		}
+
+		};
 
 	a.audioBullshit = function (data) {
 		// uses web audio api to expose waveform data
@@ -341,6 +377,7 @@
 	    else {
 	    	// https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.createScriptProcessor
 	 		root.source = context.createMediaElementSource(audio);  // doesn't seem to be implemented in safari :(
+	 		//root.source = context.createMediaStreamSource()
 	 		//root.source = context.createScriptProcessor(4096, 1, 1);  
 
 	    }
@@ -1605,6 +1642,7 @@
 				prettyTitle += ' ['+(trackNum+1)+'/'+State.playlist.length+']';
 
 			$('.song-metadata').html(prettyTitle);
+			$('.song-metadata').attr('data-go', State.playListLinks[trackNum]);
 		}
 
 			$('.song-metadata').addClass("show-meta");
@@ -1619,12 +1657,35 @@
 			}, 3000);
 
 		};
+	h.tooltipReplace = function() {
+		console.log('h.tooltipReplace fired');
+
+		var text = $(this).attr('data-hovertext');
+		console.log(text);
+		if (text != null) {
+			State.hoverTemp = $('.song-metadata').html();
+			$('.song-metadata').html(text);
+		}
+	
+		};
+	h.tooltipUnReplace = function() {
+		console.log('h.tooltipUnReplace fired');
+		
+		if (State.hoverTemp != null) {
+			$('.song-metadata').html(State.hoverTemp);
+			State.hoverTemp = null;
+		}
+
+		};
 	h.songGo = function() {
+		console.log('h.songGo fired.');
+
 		if (!$(this).attr('data-go'))
 			return false;
 		audio.pause();
 		$('.icon-pause').removeClass('icon-play');
 		window.open($(this).attr('data-go'),'_blank');
+		
 		};
 
 	h.themeChange = function(n) {
@@ -1684,6 +1745,10 @@
         return d3.scale.linear().domain([0, 360]).range([0, 2 * Math.PI])(this);
     	};
 
+	h.microphoneError = function(e) {
+		// user clicked not to let microphone be used
+		console.log(e);
+		};
     h.getURLParameter = function(sParam) {
     	//http://www.jquerybyexample.net/2012/06/get-url-parameters-using-jquery.html
 	    var sPageURL = window.location.search.substring(1);

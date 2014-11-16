@@ -74,7 +74,7 @@ body {
 }
 
 
-.icon-expand, .icon-loop-off, .icon-volume-medium, .icon-question, .icon-github2, .icon-keyboard2, .icon-soundcloud, .icon-pause, .icon-play, .icon-backward2, .icon-forward2 {
+.icon-expand, .icon-loop-off, .icon-volume-medium, .icon-question, .icon-github2, .icon-keyboard2, .icon-soundcloud, .icon-microphone, .icon-pause, .icon-play, .icon-backward2, .icon-forward2 {
   font-size: 25px;
   padding-top: 10px;
   margin-right: 4px;
@@ -83,35 +83,42 @@ body {
 .icon-pause {
   position: fixed;
   top: 110px;
-  right: 150px;
+  right: 230px;
   font-size: 40px;
 }
 
 .icon-play {
   position: fixed;
   top: 110px;
-  right: 150px;
+  right: 230px;
   font-size: 40px;
 }
 
 .icon-soundcloud {
   position: fixed;
   top: 93px;
-  right: 30px;
+  right: 100px;
   font-size: 70px;
+}
+
+.icon-microphone {
+  position: fixed;
+  top: 111px;
+  right: 30px;
+  font-size: 37px;
 }
 
 .icon-forward2 {
   position: fixed;
   top: 117px;
-  right: 120px;
+  right: 200px;
   font-size: 25px;
 }
 
 .icon-backward2 {
   position: fixed;
   top: 117px;
-  right: 197px;
+  right: 277px;
   font-size: 25px;
 }
 

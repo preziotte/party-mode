@@ -22,17 +22,8 @@
         <script src="js/id3-minimized.js"></script>
         <script src="js/main.js"></script>
         <script src="//connect.soundcloud.com/sdk.js"></script>
+        
 
-        <script>
-          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-          ga('create', 'UA-53252033-1', 'auto');
-          ga('send', 'pageview');
-
-        </script>
 
  <!--        <script> $(document).ready(function() { App.init(); }); </script> -->
     </head>
@@ -119,7 +110,7 @@
                 </div>
             </div>
         </div>
-        <div class='menu'>
+        <div class='menu menu-open'>
             <ul>
                 <li id='circle' viz-num='0' class='active'><div class='clicker'></div></li>
                 <li id='chop' viz-num='1'><div class='clicker'></div></li>
@@ -147,7 +138,8 @@
                 <i class="i icon-backward2"></i> 
                 <i class="i icon-pause"></i> 
                 <i class="i icon-forward2"></i> 
-                <i class="i icon-soundcloud schover"></i> 
+                <i class="i icon-soundcloud schover" data-hovertext='Play music from a SoundCloud URL.'></i> 
+                <i class="i icon-microphone" data-hovertext='Connect to the microphone on your computer.'></i> 
             </div>
 
             <div class='menu-wide'>
