@@ -724,11 +724,7 @@
 
 	  		var time = Date.now() - t0;
 			var xx = c.total()/100;
-			var style = '';
-			for (var i = 0; i < State.vendors.length; i++) {
-				style += State.vendors[i]+"transform: scale("+xx+","+xx+"); ";
-			}
-			$('body > svg path').attr("style", style);
+			h.applyStyles("body > svg path","transform: scale("+xx+","+xx+"); ");
 			//$('body > svg path').attr("style", "transform: skew("+xx+"deg,"+xx+"deg)");
 
 	  		// 1
@@ -823,11 +819,7 @@
 
 			var xx_t0 = c.total()/100;
 	  		var time_t0 = Date.now() - t0_thumb;
-			var style = '';
-			for (var i = 0; i < State.vendors.length; i++) {
-				style += State.vendors[i]+"transform: scale("+xx_t0+","+xx_t0+"); ";
-			}
-			$('#icosahedron svg path').attr("style", style);
+	  		h.applyStyles("#icosahedron svg path","transform: scale("+xx_t0+","+xx_t0+"); ")
 
 			projection_thumb.rotate([time_t0 * velocity_thumb[0], time_t0 * velocity_thumb[1]]);
 
@@ -1816,6 +1808,16 @@
 			return;
 		}
 		console.log('\n'+JSON.stringify(JSON.parse(x),null, 4));
+		};
+	h.applyStyles = function(selector, styleToApply){
+		if(typeof selector == undefined) return;
+		if(typeof styleToApply == undefined) return;
+
+		var style = '';
+		for (var i = 0; i < State.vendors.length; i++) {
+			style += State.vendors[i]+ styleToApply;
+		}
+		$(selector).attr("style", style);
 		};
 	root.Helper = h;
 
