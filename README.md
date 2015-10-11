@@ -23,7 +23,7 @@ ideas
 - make it a chrome extension -- hijack audio from any page and overlay visualizer.  would have to sandbox it in an iframe and then pass audio data into it..
 - make it a chrome app -- since performance seems to be better when files are local
 - auto-detect big changes in song (amplitude deltas / allow rate limiting / average threshold over time if desired) to trigger arbitrary things
-- hook up to 3rd party music service such as soundcloud / spotify / pandora
+- hook up more 3rd party music service such as spotify / pandora
 - auto detect all mp3s in local folder and display a playlist (chromes `webkitRequestFileSystem`?)
 
 known issues
