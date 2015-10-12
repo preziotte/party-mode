@@ -1,12 +1,3 @@
-todo
-----
-
-- import a generic mp3/stream url
-- remove soundcloud sdk.js dependancy
-- debug on ipad
-- grunt uglify & concat css+js
-- add analytics for clientside js errors
-
 v.1.6.0 (2014-11-15)
 --------------------
 - remove mp3s from github, replace with previews
