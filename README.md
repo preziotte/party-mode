@@ -26,18 +26,6 @@ ideas
 - hook up more 3rd party music service such as spotify / pandora
 - auto detect all mp3s in local folder and display a playlist (chromes `webkitRequestFileSystem`?)
 
-known issues
-============
-- doesn't play when running locally in firefox
-- soundcloud integration only working in chrome due to MediaElementSource only supporting same-origin sources in other browsers ([link](http://stackoverflow.com/a/23202652))
-- firefox `transform-origin: center` not implemented ([mozilla bug](https://bugzilla.mozilla.org/show_bug.cgi?id=923193))
-- opera `document.querySelector('audio').error` returns 4 (MEDIA_ERR_SRC_NOT_SUPPORTED).  doesn't support mp3s?
-- safari's AudioContext `.createMediaElementSource()` method not implemented -- so no progressive loading
-- safari freezes when returning from fullscreen
-- safari drag-n-drop issue
-- safari defer spinning vinyl animation till mp3 finishes loading
-- safari play/pause
-
 help & inspiration
 ==================
 - <a target='_blank' href='d3js.org'>D3</a>, and bl.ocks <a target='_blank' href='http://bl.ocks.org/mbostock/7782500'>#7782500</a>, 
