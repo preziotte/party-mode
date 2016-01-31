@@ -206,6 +206,7 @@
 	    //audio.controls = true;
 	    //audio.loop = true;
 	    audio.autoplay = true;
+	    audio.crossOrigin = "anonymous";
  		audio.addEventListener('ended', function() { h.songEnded(); }, false);
 		
 		$('#audio_box').empty();
