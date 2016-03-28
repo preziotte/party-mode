@@ -1,3 +1,18 @@
+
+v.1.7.0 (2016-03-28)
+--------------------
+- fix bug around hearing feedback when connected to system mic
+- ability to load in audio from an arbitrary URL (ex preziotte.com/partymode?audio=URL).  OFF and MP3 files will work best (ex preziotte.com/partymode?audio=https://upload.wikimedia.org/wikipedia/en/4/45/ACDC_-_Back_In_Black-sample.ogg).  this also includes limited support for streaming internet radio stations such as ICEcast/SHOUTcast (ex preziotte.com/partymode?audio=http://dw2.hopto.org:8080/dance.mp3).
+- new volume adjustment slider (as requested)
+- append `?fastHide=true` to the URL for the HUD to hide quicker and be less intrusive (as requested)
+- ability to shuffle a playlist of songs
+
+
+v.1.6.1 (2016-01-30)
+--------------------
+- fix CORS issue when connecting to soundcloud
+
+
 v.1.6.0 (2014-11-15)
 --------------------
 - remove mp3s from github, replace with previews
@@ -13,7 +28,6 @@ v.1.5.0 (2014-10-04)
 
 v1.1.0 (2014-09-14)
 -------------------
-
 - added favicon meta-html
 - using aadsm/JavaScript-ID3-Reader to display song & artist
 - added changelog.md

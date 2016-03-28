@@ -1161,6 +1161,10 @@ html.theme_5 .menu .hexagon {
   top: 19px;
 }
 
+.slider-volume {
+  right: 567px;
+}
+
 input[type="range"] {
   width: 100%;
   height: 3px;

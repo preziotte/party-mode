@@ -26,6 +26,8 @@
 			sliderVal: 50,												// depricated -- value of html5 slider
 			canKick: true,												// rate limits auto kick detector
 			metaLock: false,											// overrides .hideHUD() when song metadata needs to be shown
+			fastHide : (h.getURLParameter('fastHide')) ? 100 : null,
+			shuffle : false,
 
 			vendors : ['-webkit-', '-moz-', '-o-', ''],
 
@@ -43,6 +45,8 @@
 			soundCloudURL: null,
 			soundCloudData: null,
 			soundCloudTracks: null,
+
+			audioURL: null,
 
 			loop: 1,													// current loop index
 			loopDelay: [null,20000,5000,1000],							// array of loop options
@@ -68,12 +72,15 @@
 			return;
 		}
 		
-		if (h.getURLParameter('sc') == null)
-			a.loadSound();		
-		else
+		if (h.getURLParameter('sc') != null)
 			a.soundCloud();
+		else if (h.getURLParameter('audio') != null)
+			a.loadAudioFromURL(h.getURLParameter('audio'));
+		else
+			a.loadSound();
 
-
+		if (State.fastHide)
+			h.toggleMenu();
 		};
 	a.bind = function() {
 		console.log("a.bind fired");
@@ -106,6 +113,8 @@
 		$('.dotstyle').on(click, 'li', function() { h.themeChange($(this).find('a').text()); });
 		$('#slider').on('input change', function() { analyser.smoothingTimeConstant = 1-(this.value/100); }); 
 		$('#slider').on('change', function() { $('#slider').blur(); }); 
+		$('#slider-volume').on('input change', function() { audio.volume = (this.value/100); });
+		$('#slider-volume').on('change', function() { $('#slider-volume').blur(); });
 		$('.i').on('mouseenter', h.tooltipReplace);
 		$('.i').on('mouseleave', h.tooltipUnReplace);
 
@@ -124,9 +133,9 @@
 		$('body').on('touchstart mousemove',function() {
 			h.showHUD();
 			clearTimeout(hide);
-			hide = setTimeout(function() { h.hideHUD(); }, 2000);
+			hide = setTimeout(function() { h.hideHUD(); }, State.fastHide || 2000);
 		});
-		hide = setTimeout(function() { h.hideHUD(); }, 2000);
+		hide = setTimeout(function() { h.hideHUD(); }, State.fastHide || 2000);
 
 		// update state on window resize
 		window.onresize = function(event) { h.resize(); };
@@ -147,6 +156,7 @@
 		Mousetrap.bind('s', function() { h.showModal('#modal-soundcloud'); });
 		Mousetrap.bind('v', function() { h.changeSong('n'); });
 		Mousetrap.bind('x', function() { h.changeSong('p'); });
+		Mousetrap.bind('r', function() { h.toggleShuffle(); });
 
 		Mousetrap.bind('1', function() { State.trigger = 'circle'; });
 		Mousetrap.bind('2', function() { State.trigger = 'chop'; });
@@ -208,13 +218,21 @@
 	    audio.autoplay = true;
 	    audio.crossOrigin = "anonymous";
  		audio.addEventListener('ended', function() { h.songEnded(); }, false);
-		
+    // audio.addEventListener('loadedmetadata', loadedMetadata, false);
+
 		$('#audio_box').empty();
 		document.getElementById('audio_box').appendChild(audio);
         a.audioBullshit();
 
 		};
 
+	a.loadAudioFromURL = function(url) {
+		State.audioURL = url;
+		if (State.audioURL) {
+			a.loadSoundHTML5(url);
+			return;
+		}
+		};
 	a.soundCloud = function() {
 		console.log('a.soundCloud fired');		
 
@@ -316,7 +334,7 @@
 			State.metaLock = false;
 			$('.song-metadata').removeClass("show-meta");
 
-		}, 3000); 	
+		}, State.fastHide || 3000); 	
 		a.loadSoundHTML5(sound.uri+'/stream?client_id=67129366c767d009ecc75cec10fa3d0f');
 
 		});
@@ -336,18 +354,17 @@
 
 		navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
-		if (micStream == null) {
+		if (!micStream) {
 			if (navigator.getUserMedia) {
 				navigator.getUserMedia({audio: true, video: false}, function(stream) {
+					micStream = true;
 					console.log(" --> audio being captured");
-					micStream = stream;
+		      context = new (window.AudioContext || window.webkitAudioContext)();
+		      source = context.createMediaStreamSource(stream);
+		      analyser = context.createAnalyser();
+		      source.connect(analyser);
 					console.log(micStream);
-					var src = window.URL.createObjectURL(micStream);
-		 			root.source = context.createMediaStreamSource(micStream)
-					source.connect(analyser);
-					analyser.connect(context.destination);	
 					audio.pause();
-					//audio.src = null;
 				}, h.microphoneError);
 			} else {
 			  // fallback.
@@ -355,8 +372,8 @@
 		}
 		else {
 			console.log(" --> turning off")
-			micStream.stop();
-			micStream = null;
+			source.disconnect();
+			micStream = false;
 			audio.play();
 		}
 
@@ -1386,7 +1403,7 @@
 		}
 	h.hideHUD = function() {
 		//$('.icon-knobs').is(':hover') || 
-		if ($('#mp3_player').is(':hover') || $('.dotstyle').is(':hover') || $('.slider').is(':hover') || $('.icon-expand').is(':hover') || $('.icon-github2').is(':hover') || $('.icon-loop-on').is(':hover') || $('.icon-question').is(':hover') || $('.icon-keyboard2').is(':hover') || $('.song-metadata').is(':hover') || $('.icon-forward2').is(':hover') || $('.icon-backward2').is(':hover') || $('.icon-pause').is(':hover') || $('.schover').is(':hover'))
+		if ($('#mp3_player').is(':hover') || $('.dotstyle').is(':hover') || $('#slider').is(':hover') || $('#slider-volume').is(':hover') || $('.icon-expand').is(':hover') || $('.icon-github2').is(':hover') || $('.icon-loop-on').is(':hover') || $('.icon-question').is(':hover') || $('.icon-keyboard2').is(':hover') || $('.song-metadata').is(':hover') || $('.icon-forward2').is(':hover') || $('.icon-backward2').is(':hover') || $('.icon-pause').is(':hover') || $('.schover').is(':hover'))
 			return;
 
 		$('#mp3_player').addClass('fadeOut');
@@ -1444,8 +1461,8 @@
 
 		};
 	h.stop = function(e) {
-	    e.stopPropagation();
-	    e.preventDefault();
+    e.stopPropagation();
+    e.preventDefault();
 		};
 	h.handleDrop = function(e) {
 		console.log('h.handleDrop fired');
@@ -1554,6 +1571,10 @@
 
 		};
 
+	h.toggleShuffle = function() {
+		State.shuffle = !State.shuffle;
+		console.log('shuffe:'+State.shuffle);
+		}
 	h.togglePlay = function() {
 		(audio && audio.paused == false) ? audio.pause() : audio.play();
 		$('.icon-pause').toggleClass('icon-play');
@@ -1575,6 +1596,12 @@
 			return;
 		}
 
+		if (State.shuffle == true) {
+			console.log("shuffling song ("+totalTracks+" total)");
+			State.currentSong = Math.ceil(Math.random()*totalTracks);
+			console.log(State.currentSong);
+		}
+
 		if (direction == 'n')
 			State.currentSong = State.currentSong + 1;
 
@@ -1593,7 +1620,10 @@
 		}
 
 		if (State.soundCloudData) {
-			var trackNum = Math.abs(State.currentSong)%State.soundCloudTracks;
+			if (State.shuffle == true)
+				var trackNum = Math.ceil(Math.random()*State.soundCloudTracks);
+			else 
+				var trackNum = Math.abs(State.currentSong)%State.soundCloudTracks;
 			h.renderSongTitle(State.soundCloudData[trackNum]);
 			a.loadSoundHTML5(State.soundCloudData[trackNum].uri+'/stream?client_id=67129366c767d009ecc75cec10fa3d0f');
 		}
@@ -1647,7 +1677,7 @@
 				State.metaLock = false;
 				if (State.hud == 0)
 					$('.song-metadata').removeClass("show-meta");
-			}, 3000);
+			}, State.fastHide || 3000);
 
 		};
 	h.tooltipReplace = function() {
@@ -1735,8 +1765,8 @@
 		return faces;
 		};
 	h.degreesToRads = function(n) {
-        return d3.scale.linear().domain([0, 360]).range([0, 2 * Math.PI])(this);
-    	};
+    return d3.scale.linear().domain([0, 360]).range([0, 2 * Math.PI])(this);
+  	};
 
 	h.microphoneError = function(e) {
 		// user clicked not to let microphone be used

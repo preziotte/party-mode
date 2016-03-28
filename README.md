@@ -4,7 +4,7 @@
 
 An audio visualizer experiment for the browser.  Powered by [d3.js](https://github.com/mbostock/d3) and the [web audio api](http://www.w3.org/TR/webaudio/).  Runs best in Chrome.  Working demo @ http://preziotte.com/partymode.  Try dragging in an mp3 from your desktop!  
 
-###*** *If anything deserves an epilepsy warning, it'd be this.* ***
+###*** epilepsy warning ***
 
 a somewhat-technical overview
 ===========================
@@ -17,6 +17,10 @@ Mousetrap.js handles my keyboard shortcuts brilliantly, and jQuery made life eas
 I developed this primarily in Chrome.  Other modern browsers still have some interesting issues (see known issues).  I've found that WebKit seems to have the [most competent](https://www.mapbox.com/osmdev/2012/11/20/getting-serious-about-svg/) implementation of SVG.  And specifically Chrome seems to play the nicest with the html5 audio element.  For my purposes at least.  Running this can easily strain my four year old MacBook's CPU, but I think I'm pushing several things beyond what they were intended for with this thing.  Not complaining.
 
 Markup lies in `index.html`, javascript is in `js/main.js` and style in `css/style.css`.  I can go into more detail if there's demand for it.
+
+running it locally
+==================
+There may be issues running this app locally without a server.  I recommend `cd`ing into the directory and running `http-server` from the command line.  If you don't have this command, install it like so: `npm install -g http-server`.
 
 ideas
 =====
