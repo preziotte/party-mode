@@ -2,7 +2,7 @@
 <img src="https://raw.githubusercontent.com/preziotte/party-mode/master/img/1-logo.gif"/>
 </p>
 
-An audio visualizer experiment for the browser.  Powered by [d3.js](https://github.com/mbostock/d3) and the [web audio api](http://www.w3.org/TR/webaudio/).  Runs best in Chrome.  Working demo @ http://preziotte.com/partymode.  Try dragging in an mp3 from your desktop!  
+An audio visualizer experiment for the browser.  Powered by [d3.js](https://github.com/mbostock/d3) and the [web audio api](http://www.w3.org/TR/webaudio/).  Runs best in Chrome.  Working demo @ https://preziotte.com/partymode.  Try dragging in an mp3 from your desktop!  
 
 ###*** epilepsy warning ***
 
@@ -60,8 +60,8 @@ help & inspiration
 
 examples
 --------
-- http://preziotte.com/partymode
-- http://preziotte.com/odesza (Featured on Odesza's official [Youtube](http://www.youtube.com/watch?v=Km-0kHxa7jg) channel)
+- https://preziotte.com/partymode
+- https://preziotte.com/odesza (Featured on Odesza's official [Youtube](http://www.youtube.com/watch?v=Km-0kHxa7jg) channel)
 
 cool gifs
 ==========

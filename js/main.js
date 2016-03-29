@@ -30,6 +30,7 @@
 			shuffle : false,
 
 			vendors : ['-webkit-', '-moz-', '-o-', ''],
+			protocol : window.location.protocol,
 
 			drawInterval: 1000/24,										// 1000ms divided by max framerate
 			then: Date.now(),											// last time a frame was drawn
@@ -256,7 +257,7 @@
 
 		// use /resolve to get tracks/playlists/whatever from url
 		$.get(
-		  'http://api.soundcloud.com/resolve.json?url=' + State.soundCloudURL + '&client_id=67129366c767d009ecc75cec10fa3d0f', 
+		  'https://api.soundcloud.com/resolve.json?url=' + State.soundCloudURL + '&client_id=67129366c767d009ecc75cec10fa3d0f', 
 		  function (result) {
 		  	State.soundCloudData = result;
 		    console.log(result);
@@ -350,8 +351,11 @@
 					 // });
 		};
 	a.microphone = function() {
+		// this will only work over an https connection (or running the app locally)
 		console.log('a.microphone fired');
-
+		if (State.protocol.indexOf('https') == -1) {
+			console.log("WARNING:: Accessing the microphone is only available using https://");
+		}
 		navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
 		if (!micStream) {
