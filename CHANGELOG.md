@@ -1,8 +1,12 @@
 
+v.1.7.1 (2016-03-29)
+--------------------
+- fix bug around `https://` compatibility
+
 v.1.7.0 (2016-03-28)
 --------------------
 - fix bug around hearing feedback when connected to system mic
-- ability to load in audio from an arbitrary URL (ex preziotte.com/partymode?audio=URL).  OGG and MP3 files will work best (ex https://preziotte.com/partymode?audio=https://upload.wikimedia.org/wikipedia/en/4/45/ACDC_-_Back_In_Black-sample.ogg).  this also includes limited support for streaming internet radio stations such as ICEcast/SHOUTcast (ex https://preziotte.com/partymode?audio=http://dw2.hopto.org:8080/dance.mp3).
+- ability to load in audio from an arbitrary URL (ex preziotte.com/partymode?audio=URL).  OGG and MP3 files will work best ([example](https://preziotte.com/partymode?audio=https://upload.wikimedia.org/wikipedia/en/4/45/ACDC_-_Back_In_Black-sample.ogg)).  this also includes limited support for streaming internet radio stations such as ICEcast/SHOUTcast ([example](https://preziotte.com/partymode?audio=http://dw2.hopto.org:8080/dance.mp3)).
 - new volume adjustment slider (as requested)
 - append `?fastHide=true` to the URL for the HUD to hide quicker and be less intrusive (as requested)
 - ability to shuffle a playlist of songs
