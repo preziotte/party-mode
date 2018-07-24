@@ -1467,7 +1467,7 @@
 		};
 	h.restartSong = function(e) {
 		audio.currentTime = 0;
-	}
+	};
 	h.stop = function(e) {
     e.stopPropagation();
     e.preventDefault();
