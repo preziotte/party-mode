@@ -129,6 +129,14 @@
 			//audio = this;
 		}, false);
 
+		$('body').on('click', function() {
+			// satisfy chrome autoplay policy changes
+			// https://developers.google.com/web/updates/2017/09/autoplay-policy-changes#webaudio
+			if (context.state != 'suspended') return;
+			context.resume().then(() => {
+			    console.log('playback resumed successfully');
+			});
+		});
 
 		// hide HUD on idle mouse
 		$('body').on('touchstart mousemove',function() {
