@@ -166,6 +166,7 @@
 		Mousetrap.bind('v', function() { h.changeSong('n'); });
 		Mousetrap.bind('x', function() { h.changeSong('p'); });
 		Mousetrap.bind('r', function() { h.toggleShuffle(); });
+		Mousetrap.bind('z', function() { h.restartSong(); });
 
 		Mousetrap.bind('1', function() { State.trigger = 'circle'; });
 		Mousetrap.bind('2', function() { State.trigger = 'chop'; });
@@ -1472,6 +1473,9 @@
 		if (!full) $('.icon-expand').removeClass('icon-contract');
 
 		};
+	h.restartSong = function(e) {
+		audio.currentTime = 0;
+	};
 	h.stop = function(e) {
     e.stopPropagation();
     e.preventDefault();
