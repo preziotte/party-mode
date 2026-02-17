@@ -1,3 +1,6 @@
+# ✨ This project has evolved into [vizz.fm](https://vizz.fm)! ✨
+It's been completely rewritten using Three.js/WebGL for next-gen real-time 3D music visualization. This repo is kept around for reference but is no longer actively maintained.
+
 <p align="center">
 <img src="https://raw.githubusercontent.com/preziotte/party-mode/master/img/1-logo.gif"/>
 </p>
