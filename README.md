@@ -1,14 +1,13 @@
+# ✨ This project has evolved into [vizz.fm](https://vizz.fm)! ✨
+It's been completely rewritten using Three.js/WebGL for next-gen real-time 3D music visualization. This repo is kept around for reference but is no longer actively maintained.
+
 <p align="center">
 <img src="https://raw.githubusercontent.com/preziotte/party-mode/master/img/1-logo.gif"/>
 </p>
 
-# Party Mode
+## Party Mode
 
-An experimental browser music visualizer built in 2014 with [d3.js](https://github.com/d3/d3) and the [Web Audio API](https://www.w3.org/TR/webaudio/). It draws SVG in real time from the frequency data of an HTML5 audio element.
-
-This repo is kept up for reference. It still runs, and the code is still here to read, but it is no longer actively maintained.
-
-**The project continued as [vizz.fm](https://vizz.fm), a free real-time music visualizer that runs in the browser.** Same idea, rebuilt from scratch in Three.js and WebGL. If you landed here looking for something to actually use, go there.
+An experimental browser music visualizer built in 2014 with [d3.js](https://github.com/d3/d3) and the [Web Audio API](https://www.w3.org/TR/webaudio/). It draws SVG in real time from the frequency data of an HTML5 audio element. If you landed here looking for something to actually use, go to [vizz.fm](https://vizz.fm).
 
 ---
 
